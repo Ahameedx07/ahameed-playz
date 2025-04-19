@@ -1,0 +1,491 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Crash Boss Panel</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js">
+    function toggleSection(which) {
+      document.getElementById("manual_section").style.display = "none";
+      document.getElementById("hash_section").style.display = "none";
+      document.getElementById("auto_section").style.display = "none";
+      document.getElementById(which + "_section").style.display = "block";
+    }
+
+    // Fix autoPredictRound to use same realistic logic from hash-based method
+    function autoPredictRound() {
+      if (!window.realisticHash) {
+        window.realisticHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+      }
+      realisticHash = CryptoJS.SHA256(realisticHash).toString();
+      const mult = gameResult(realisticHash);
+      const color = getColorClass(mult);
+      const resultHTML = `<span class="${color}">${mult.toFixed(2)}x</span>`;
+      document.getElementById("prediction_result").innerHTML = resultHTML;
+      const historyDiv = document.getElementById("auto_history");
+      historyDiv.innerHTML = resultHTML + " " + historyDiv.innerHTML;
+    }
+    
+    let liveInterval = null;
+    let liveSeed = "";
+
+    function startLiveFair() {
+      if (liveInterval) clearInterval(liveInterval);
+      let customSeed = document.getElementById("fair_seed_input").value.trim();
+      liveSeed = customSeed.length === 64 ? customSeed : "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+      document.getElementById("live_result").innerHTML = "Starting...";
+      document.getElementById("live_history").innerHTML = "";
+
+      
+    let liveRound = 1;
+    function nextRound() {
+      document.getElementById("live_round_info").innerText = "Round #" + liveRound;
+    
+        liveSeed = CryptoJS.SHA256(liveSeed).toString();
+        
+      const hashDisplay = liveSeed;
+      const mult = gameResult(liveSeed);
+      
+    const hashElem = document.getElementById("live_hash");
+    hashElem.innerHTML = 'Hash: <span style="cursor:copy;" onclick="copyHash(\'' + hashDisplay + '\')">' + hashDisplay + '</span>';
+    
+    
+        const color = getColorClass(mult);
+        const display = `<span class="${color}">${mult.toFixed(2)}x</span>`;
+        document.getElementById("live_result").innerHTML = display;
+        document.getElementById("live_history").innerHTML = display + " " + document.getElementById("live_history").innerHTML;
+
+        
+    
+    let waitTime = mult * 1000;
+    if (waitTime > 15000) waitTime = 15000;
+    if (waitTime < 2000) waitTime = 2000;
+    const nextDelay = waitTime + Math.random() * 500;
+    
+     // 3s to 6s random delay like real game
+        liveRound++;
+liveInterval = setTimeout(nextRound, nextDelay);
+      }
+
+      nextRound();
+    }
+    
+    function stopLiveFair() {
+      if (liveInterval) clearTimeout(liveInterval);
+    }
+
+    function resetLiveFair() {
+      stopLiveFair();
+      document.getElementById("live_result").innerHTML = "";
+      document.getElementById("live_hash").innerHTML = "";
+      document.getElementById("live_history").innerHTML = "";
+      document.getElementById("live_round_info").innerText = "Round #1";
+      liveRound = 1;
+    }
+
+    function copyHash(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Hash copied to clipboard!");
+      });
+    }
+    
+    function setAutoMode(mode) {
+      document.getElementById("modeA").style.display = mode === 'A' ? 'block' : 'none';
+      document.getElementById("modeB").style.display = mode === 'B' ? 'block' : 'none';
+      document.getElementById("btnModeA").style.background = mode === 'A' ? '#ffaa33' : '#444';
+      document.getElementById("btnModeB").style.background = mode === 'B' ? '#ffaa33' : '#444';
+    }
+    setAutoMode('A'); // default view
+    </script>
+<style>
+    body {
+      background: #0e0e0e;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+      margin: 0;
+    }
+    h1, h2 { color: #ff9500; text-align: center; }
+    section { margin-bottom: 40px; padding: 20px; border: 1px solid #333; border-radius: 10px; background: #181818; }
+    input, button, textarea, select {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px;
+      border-radius: 6px;
+      border: none;
+      width: 90%;
+      max-width: 600px;
+    }
+    button {
+      background: #ff9500;
+      color: white;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .green { color: #00ff7f; }
+    .purple { color: #bb66ff; }
+    .red { color: #ff4747; }
+    table {
+      width: 95%;
+      margin: 20px auto;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+    }
+    .report-box {
+      margin-top: 20px;
+      background: #1a1a1a;
+      padding: 15px;
+      border-radius: 10px;
+    }
+  </style>
+<style>
+@keyframes defendGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 5px cyan; }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px #0ff; }
+}
+button, .button, input[type="submit"] {
+  animation: defendGlow 2s ease-in-out infinite;
+  transition: 0.3s;
+}
+button:hover, .button:hover, input[type="submit"]:hover {
+  transform: scale(1.1);
+  background-color: #444;
+}
+</style>
+
+<style>
+/* Animation CSS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+section {
+  position: relative;
+}
+.section-divider {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00f2ff, #1e1e2f);
+  margin: 1rem 0;
+  animation: fadeInUp 1s ease-out forwards;
+}
+.play-btn, .download-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.play-btn::after, .download-btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  top: 0;
+  left: -100%;
+  z-index: 0;
+  transition: all 0.5s;
+}
+.play-btn:hover::after, .download-btn:hover::after {
+  left: 0;
+}
+</style>
+</head>
+<body style="font-family: 'Orbitron', sans-serif;">
+<h1>Crash Predictor Boss Panel</h1>
+<div style="text-align: center; margin: 20px 0;">
+<button onclick="toggleSection('manual')">Live Manual Reader</button>
+<button onclick="toggleSection('hash')">Hash Prediction</button>
+<button onclick="toggleSection('auto')">Auto Round Simulation</button>
+</div>
+<section id="manual_section" style="display: none;"><div class="section-divider"></div>
+<h2>1. Manual Live Prediction Reader</h2>
+<textarea id="live_input" placeholder="e.g. 1.44x 2.01x 8.9x 12.5x"></textarea><br/>
+<button onclick="analyzeLive()">Analyze</button>
+<div class="report-box" id="report_box"></div>
+</section>
+<section id="hash_section" style="display: none;"><div class="section-divider"></div>
+<h2>2. Hash-Based Prediction</h2>
+<input id="hash_input" placeholder="Enter 64-char game hash" type="text"/>
+<select id="round_count">
+<option value="5">5 rounds</option>
+<option selected="" value="10">10 rounds</option>
+<option value="20">20 rounds</option>
+</select>
+<button onclick="predictHash()">Predict</button>
+<table><thead><tr><th>Round</th><th>Hash</th><th>Multiplier</th></tr></thead><tbody id="hash_table"></tbody></table>
+</section>
+<section id="auto_section" style="display: none;"><div class="section-divider"></div>
+<div id="mode_switch" style="text-align:center; margin-bottom: 20px;">
+<button id="btnModeA" onclick="setAutoMode('A')">Live Simulation</button>
+<button id="btnModeB" onclick="setAutoMode('B')">Timer Predictor</button>
+</div>
+<div id="live_runner">
+<p style="text-align:center; font-size: 14px; color:#888;">(Live simulation now waits longer for higher multipliers like real game)</p>
+<h2>3. Live-Style Fair Crash Simulation</h2>
+<input id="fair_seed_input" placeholder="(Optional) Custom Start Hash" type="text"/>
+<button onclick="startLiveFair()">Start</button>
+<button onclick="stopLiveFair()">Stop</button>
+<button onclick="resetLiveFair()">Reset</button>
+<div id="live_round_info" style="font-size: 20px; margin-top: 15px;">Round #1</div>
+<div id="modeA" style="display:none;"><div id="live_result" style="font-size: 36px; margin: 10px 0;"></div>
+<div id="live_hash" style="color:#777; font-size: 12px; margin-bottom: 15px;"></div>
+</div><div id="live_history" style="margin-top: 20px;"></div>
+</div>
+<h2>3. Timer-Based Auto Predictor</h2>
+<div id="countdown">Next round starts in <span id="timer">5</span> seconds...</div>
+<div id="modeB" style="display:none;"><div id="prediction_result" style="font-size:32px; margin:15px;"></div>
+<button id="autoBtn" onclick="autoPredict()">Start Auto Prediction</button>
+<button onclick="stopAutoPredict()">Stop</button>
+<div id="auto_history"></div></div><div id="auto_history"></div>
+</section>
+<script>
+  function getColorClass(x) {
+    if (x < 2) return 'green';
+    if (x < 10) return 'purple';
+    return 'red';
+  }
+
+  function analyzeLive() {
+    const input = document.getElementById("live_input").value;
+    const values = input.match(/[0-9]+(\.[0-9]+)?/g)?.map(Number) || [];
+    if (values.length === 0) {
+      alert("Please input valid multiplier numbers.");
+      return;
+    }
+
+    let longestDown = 0, currentDown = 0, sum = 0;
+    let coloredText = "";
+
+    values.forEach((val) => {
+      sum += val;
+      if (val < 2) {
+        currentDown++;
+        if (currentDown > longestDown) longestDown = currentDown;
+      } else {
+        currentDown = 0;
+      }
+      const cls = getColorClass(val);
+      coloredText += `<span class="${cls}">${val.toFixed(2)}x</span>  `;
+    });
+
+    const avg = sum / values.length;
+    let action = "Wait";
+    if (longestDown >= 5) action = "High Crash Risk - Avoid";
+    else if (avg > 3 && values[values.length - 1] > 2) action = "Safe to Bet";
+    else if (avg < 2) action = "Market Cooling - Be Cautious";
+
+    document.getElementById("report_box").innerHTML = `
+      <p>${coloredText}</p>
+      <p><b>Average:</b> ${avg.toFixed(2)}x</p>
+      <p><b>Longest Downstreak (&lt;2x):</b> ${longestDown}</p>
+      <p><b>Suggested Action:</b> <span style="color: #ffcc00">${action}</span></p>
+    `;
+  }
+
+  function gameResult(seed) {
+    const nBits = 52;
+    seed = seed.slice(0, nBits / 4);
+    const r = parseInt(seed, 16);
+    let X = r / Math.pow(2, nBits);
+    X = 99 / (1 - X);
+    const result = Math.floor(X);
+    return Math.max(1, result / 100);
+  }
+
+  function predictHash() {
+    let hash = document.getElementById("hash_input").value.trim();
+    const rounds = parseInt(document.getElementById("round_count").value);
+    if (hash.length < 64) {
+      alert("Please enter a valid hash.");
+      return;
+    }
+    let table = "";
+    for (let i = 0; i < rounds; i++) {
+      hash = CryptoJS.SHA256(hash).toString();
+      const m = gameResult(hash);
+      const color = getColorClass(m);
+      table += `<tr><td>${i + 1}</td><td>${hash}</td><td class="${color}">${m.toFixed(2)}x</td></tr>`;
+    }
+    document.getElementById("hash_table").innerHTML = table;
+  }
+
+  let countdown = 5;
+  let interval;
+  function updateCountdown() {
+    document.getElementById("timer").innerText = countdown;
+    countdown--;
+    if (countdown < 0) {
+      clearInterval(interval);
+      autoPredictRound();
+      countdown = 5;
+      interval = setInterval(updateCountdown, 1000);
+    }
+  }
+
+  function getRandomMultiplier() {
+    let val = Math.random() * 50;
+    return (Math.random() < 0.05) ? (val + 50).toFixed(2) : val.toFixed(2);
+  }
+
+  function autoPredict() {
+    countdown = 5;
+    interval = setInterval(updateCountdown, 1000);
+  }
+
+  function autoPredictRound() {
+    const mult = getRandomMultiplier();
+    const color = getColorClass(mult);
+    const resultHTML = `<span class="${color}">${mult}x</span>`;
+    document.getElementById("prediction_result").innerHTML = resultHTML;
+    const historyDiv = document.getElementById("auto_history");
+    historyDiv.innerHTML = resultHTML + " " + historyDiv.innerHTML;
+  }
+
+    function toggleSection(which) {
+      document.getElementById("manual_section").style.display = "none";
+      document.getElementById("hash_section").style.display = "none";
+      document.getElementById("auto_section").style.display = "none";
+      document.getElementById(which + "_section").style.display = "block";
+    }
+
+    // Fix autoPredictRound to use same realistic logic from hash-based method
+    function autoPredictRound() {
+      if (!window.realisticHash) {
+        window.realisticHash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+      }
+      realisticHash = CryptoJS.SHA256(realisticHash).toString();
+      const mult = gameResult(realisticHash);
+      const color = getColorClass(mult);
+      const resultHTML = `<span class="${color}">${mult.toFixed(2)}x</span>`;
+      document.getElementById("prediction_result").innerHTML = resultHTML;
+      const historyDiv = document.getElementById("auto_history");
+      historyDiv.innerHTML = resultHTML + " " + historyDiv.innerHTML;
+    }
+    
+    let liveInterval = null;
+    let liveSeed = "";
+
+    function startLiveFair() {
+      if (liveInterval) clearInterval(liveInterval);
+      let customSeed = document.getElementById("fair_seed_input").value.trim();
+      liveSeed = customSeed.length === 64 ? customSeed : "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
+      document.getElementById("live_result").innerHTML = "Starting...";
+      document.getElementById("live_history").innerHTML = "";
+
+      
+    let liveRound = 1;
+    function nextRound() {
+      document.getElementById("live_round_info").innerText = "Round #" + liveRound;
+    
+        liveSeed = CryptoJS.SHA256(liveSeed).toString();
+        
+      const hashDisplay = liveSeed;
+      const mult = gameResult(liveSeed);
+      
+    const hashElem = document.getElementById("live_hash");
+    hashElem.innerHTML = 'Hash: <span style="cursor:copy;" onclick="copyHash(\'' + hashDisplay + '\')">' + hashDisplay + '</span>';
+    
+    
+        const color = getColorClass(mult);
+        const display = `<span class="${color}">${mult.toFixed(2)}x</span>`;
+        document.getElementById("live_result").innerHTML = display;
+        document.getElementById("live_history").innerHTML = display + " " + document.getElementById("live_history").innerHTML;
+
+        
+    
+    let waitTime = mult * 1000;
+    if (waitTime > 15000) waitTime = 15000;
+    if (waitTime < 2000) waitTime = 2000;
+    const nextDelay = waitTime + Math.random() * 500;
+    
+     // 3s to 6s random delay like real game
+        liveRound++;
+liveInterval = setTimeout(nextRound, nextDelay);
+      }
+
+      nextRound();
+    }
+    
+    function stopLiveFair() {
+      if (liveInterval) clearTimeout(liveInterval);
+    }
+
+    function resetLiveFair() {
+      stopLiveFair();
+      document.getElementById("live_result").innerHTML = "";
+      document.getElementById("live_hash").innerHTML = "";
+      document.getElementById("live_history").innerHTML = "";
+      document.getElementById("live_round_info").innerText = "Round #1";
+      liveRound = 1;
+    }
+
+    function copyHash(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Hash copied to clipboard!");
+      });
+    }
+    
+    function setAutoMode(mode) {
+      document.getElementById("modeA").style.display = mode === 'A' ? 'block' : 'none';
+      document.getElementById("modeB").style.display = mode === 'B' ? 'block' : 'none';
+      document.getElementById("btnModeA").style.background = mode === 'A' ? '#ffaa33' : '#444';
+      document.getElementById("btnModeB").style.background = mode === 'B' ? '#ffaa33' : '#444';
+    }
+    setAutoMode('A'); // default view
+    </script>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #0f172a, #1e293b);
+    color: white;
+    padding-bottom: 60px;
+  }
+  .ahameed-footer {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #facc15;
+    font-weight: bold;
+    margin-top: 40px;
+  }
+</style>
+<div class="ahameed-footer">🚀 Powered by Ahameed Playz</div>
+<div style="text-align:center;margin-top:20px;"><a href="index.html" style="display:inline-block;padding:10px 20px;background:yellow;border-radius:5px;text-decoration:none;font-weight:bold;">Return to Home</a></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("animate-up");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".card, .section-divider, .info").forEach(el => {
+    observer.observe(el);
+  });
+});
+</script>
+</body>
+</html>

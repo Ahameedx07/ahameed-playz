@@ -1,0 +1,104 @@
+<!-- Register Page -->
+<!DOCTYPE html>
+
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<title>Register | Ahameed Playz</title><link href="../css/style.css" rel="stylesheet"/>
+<style>
+@keyframes defendGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 5px cyan; }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px #0ff; }
+}
+button, .button, input[type="submit"] {
+  animation: defendGlow 2s ease-in-out infinite;
+  transition: 0.3s;
+}
+button:hover, .button:hover, input[type="submit"]:hover {
+  transform: scale(1.1);
+  background-color: #444;
+}
+</style>
+
+<style>
+/* Animation CSS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+section {
+  position: relative;
+}
+.section-divider {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00f2ff, #1e1e2f);
+  margin: 1rem 0;
+  animation: fadeInUp 1s ease-out forwards;
+}
+.play-btn, .download-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.play-btn::after, .download-btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  top: 0;
+  left: -100%;
+  z-index: 0;
+  transition: all 0.5s;
+}
+.play-btn:hover::after, .download-btn:hover::after {
+  left: 0;
+}
+</style>
+</head>
+<body style="font-family: 'Orbitron', sans-serif;">
+<div class="register-container">
+<h2>Create Account 👤</h2>
+<input id="regName" placeholder="Full Name" type="text"/>
+<input id="regEmail" placeholder="Email" type="email"/>
+<input id="regPassword" placeholder="Password" type="password"/>
+<button onclick="register()">Sign Up ✨</button>
+</div>
+<script src="../js/script.js"></script>
+<div style="text-align:center; margin-top: 50px;">
+<p>Contact: <a href="https://t.me/Ahameed07" target="_blank">Telegram</a></p>
+<p><strong>Powered by Ahameed Playz</strong></p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("animate-up");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".card, .section-divider, .info").forEach(el => {
+    observer.observe(el);
+  });
+});
+</script>
+</body>
+</html>

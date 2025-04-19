@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>404 Not Found</title>
+<style>
+    body {
+      background-color: #1c1c1c;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    h1 {
+      font-size: 48px;
+      color: #ff4f4f;
+    }
+    p {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    a {
+      color: #00ffff;
+      text-decoration: underline;
+      font-size: 18px;
+    }
+  </style>
+
+<style>
+/* Animation CSS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+section {
+  position: relative;
+}
+.section-divider {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00f2ff, #1e1e2f);
+  margin: 1rem 0;
+  animation: fadeInUp 1s ease-out forwards;
+}
+.play-btn, .download-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.play-btn::after, .download-btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  top: 0;
+  left: -100%;
+  z-index: 0;
+  transition: all 0.5s;
+}
+.play-btn:hover::after, .download-btn:hover::after {
+  left: 0;
+}
+</style>
+</head>
+<body>
+<h1>Page Not Found</h1>
+<p>The page you're looking for doesn't exist.</p>
+<a href="index.html">Back to Home</a>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("animate-up");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".card, .section-divider, .info").forEach(el => {
+    observer.observe(el);
+  });
+});
+</script>
+</body>
+</html>

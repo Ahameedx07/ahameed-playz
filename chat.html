@@ -1,0 +1,202 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Chat - Ahameed Playz</title>
+<style>
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f172a;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      animation: fadeIn 0.6s ease;
+    }
+    header {
+      padding: 1rem;
+      background: #1e293b;
+      text-align: center;
+      font-size: 1.2rem;
+      color: #facc15;
+    }
+    #messages {
+      flex: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .message {
+      padding: 10px;
+      border-radius: 8px;
+      max-width: 75%;
+      background: #334155;
+    }
+    .you {
+      background: #3b82f6;
+      align-self: flex-end;
+    }
+    form {
+      display: flex;
+      background: #1e293b;
+      padding: 1rem;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 8px;
+      border: none;
+    }
+    button {
+      margin-left: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: #facc15;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+<style>
+@keyframes defendGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 5px cyan; }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px #0ff; }
+}
+button, .button, input[type="submit"] {
+  animation: defendGlow 2s ease-in-out infinite;
+  transition: 0.3s;
+}
+button:hover, .button:hover, input[type="submit"]:hover {
+  transform: scale(1.1);
+  background-color: #444;
+}
+</style>
+
+<style>
+/* Animation CSS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+section {
+  position: relative;
+}
+.section-divider {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00f2ff, #1e1e2f);
+  margin: 1rem 0;
+  animation: fadeInUp 1s ease-out forwards;
+}
+.play-btn, .download-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.play-btn::after, .download-btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  top: 0;
+  left: -100%;
+  z-index: 0;
+  transition: all 0.5s;
+}
+.play-btn:hover::after, .download-btn:hover::after {
+  left: 0;
+}
+</style>
+</head>
+<body style="font-family: 'Orbitron', sans-serif;">
+<header>💬 Chat</header>
+<div id="messages"></div>
+<form id="chat-form">
+<input id="messageInput" placeholder="Type your message..." type="text"/>
+<button type="submit">Send</button>
+</form>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
+<script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBuQg3KvWjDvMtgZIs9bkd42lZtD-VMVlo",
+      authDomain: "ahameedplayz.firebaseapp.com",
+      databaseURL: "https://ahameedplayz-default-rtdb.firebaseio.com",
+      projectId: "ahameedplayz",
+      storageBucket: "ahameedplayz.firebasestorage.app",
+      messagingSenderId: "856419546226",
+      appId: "1:856419546226:web:56cf8ede8be91ff10e3eeb"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    const chatForm = document.getElementById('chat-form');
+    const messageInput = document.getElementById('messageInput');
+    const messages = document.getElementById('messages');
+
+    db.ref('messages').on('child_added', snapshot => {
+      const msg = snapshot.val();
+      const div = document.createElement('div');
+      div.className = 'message ' + (msg.sender === 'you' ? 'you' : '');
+      div.textContent = `${msg.sender}: ${msg.text}`;
+      messages.appendChild(div);
+      messages.scrollTop = messages.scrollHeight;
+    });
+
+    chatForm.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = messageInput.value.trim();
+      if (text !== "") {
+        db.ref('messages').push({ sender: 'you', text });
+        messageInput.value = "";
+      }
+    });
+  </script>
+<div style="text-align:center;margin-top:20px;"><a href="index.html" style="display:inline-block;padding:10px 20px;background:yellow;border-radius:5px;text-decoration:none;font-weight:bold;">Return to Home</a></div>
+<div style="text-align:center; margin-top: 50px;">
+<p>Contact: <a href="https://t.me/Ahameed07" target="_blank">Telegram</a></p>
+<p><strong>Powered by Ahameed Playz</strong></p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("animate-up");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".card, .section-divider, .info").forEach(el => {
+    observer.observe(el);
+  });
+});
+</script>
+</body>
+</html>

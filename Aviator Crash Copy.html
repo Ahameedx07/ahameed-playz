@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<title>Ahameed Aviator Crash</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<style>
+    body { margin:0; font-family:sans-serif; background:#000; color:#fff; overflow-x: hidden; }
+    header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 20px; background: #111; font-size: 18px;
+    }
+    .balance { font-weight: bold; }
+    #countdown { font-size: 28px; margin: 10px 0; color: #ff0; text-align: center; }
+    #history {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 6px; margin: 10px 0;
+    }
+    #history span {
+      padding: 4px 8px; border-radius: 4px; background: #222;
+      font-weight: bold; cursor: pointer;
+    }
+    .green { color: #0f0; }
+    .purple { color: #bb86fc; }
+    .red { color: red; }
+    #game {
+      position: relative; width: 100%; height: 200px; margin: 0 auto; background: #111;
+    }
+    #plane {
+      position: absolute; top: 50%; left: 21%;
+      transform: translateY(-50%); font-size: 36px;
+    }
+    #multiplier {
+      text-align: center; font-size: 40px; margin-top: 10px;
+    }
+    #controls {
+      display: flex; justify-content: center; gap: 10px;
+      margin: 20px 0;
+    }
+    input, button {
+      padding: 10px; font-size: 16px; border-radius: 5px;
+      border: none;
+    }
+    input { width: 100px; background: #222; color: #fff; }
+    #betBtn { background: green; color: white; }
+    #cashoutBtn { background: yellow; color: black; }
+    #result, #personalHistory {
+      text-align: center; margin-top: 10px;
+    }
+  </style>
+<style>
+@keyframes defendGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 5px cyan; }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px #0ff; }
+}
+button, .button, input[type="submit"] {
+  animation: defendGlow 2s ease-in-out infinite;
+  transition: 0.3s;
+}
+button:hover, .button:hover, input[type="submit"]:hover {
+  transform: scale(1.1);
+  background-color: #444;
+}
+</style>
+
+<style>
+/* Animation CSS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+section {
+  position: relative;
+}
+.section-divider {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00f2ff, #1e1e2f);
+  margin: 1rem 0;
+  animation: fadeInUp 1s ease-out forwards;
+}
+.play-btn, .download-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.play-btn::after, .download-btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  top: 0;
+  left: -100%;
+  z-index: 0;
+  transition: all 0.5s;
+}
+.play-btn:hover::after, .download-btn:hover::after {
+  left: 0;
+}
+</style>
+</head>
+<body style="font-family: 'Orbitron', sans-serif;">
+<header>
+<div>Ahameed Aviator</div>
+<div class="balance">Balance: <span id="balance">10000</span> Coins</div>
+</header>
+<div id="countdown">Next round in: 10s</div>
+<div id="history"></div>
+<div id="game">
+<div id="plane">✈️</div>
+</div>
+<div id="multiplier">1.00x</div>
+<div id="controls">
+<input id="betAmount" placeholder="Bet" type="number" value="100"/>
+<input id="autoCashout" placeholder="Auto Cashout" type="number"/>
+<button id="betBtn" onclick="placeBet()">Place Bet</button>
+<button id="cashoutBtn" onclick="cashOut()">Cash Out</button>
+</div>
+<div id="result"></div>
+<div id="personalHistory"></div>
+<script>
+    let balance = 10000, bet = 0, placed = false, crashed = false;
+    let multiplier = 1.00, crashPoint = 0, interval, history = [], round = 1;
+    const multiplierEl = document.getElementById("multiplier");
+    const planeEl = document.getElementById("plane");
+    const countdownEl = document.getElementById("countdown");
+    const historyEl = document.getElementById("history");
+    const resultEl = document.getElementById("result");
+    const personalEl = document.getElementById("personalHistory");
+    const betInput = document.getElementById("betAmount");
+    const autoInput = document.getElementById("autoCashout");
+    const balanceEl = document.getElementById("balance");
+    const betBtn = document.getElementById("betBtn");
+    const cashoutBtn = document.getElementById("cashoutBtn");
+
+    function getColor(m) {
+      if (m < 2) return "green";
+      if (m < 10) return "purple";
+      return "red";
+    }
+
+    function updateHistory(val) {
+      const timeAgo = new Date().toLocaleTimeString();
+      const span = document.createElement("span");
+      span.innerText = `${val}x`;
+      span.classList.add(getColor(val));
+      span.title = `Round ${round} | Crashed now`;
+      span.onclick = () => alert(`Round ${round} | Crashed at ${val}x`);
+      history.unshift({ val, element: span, timestamp: Date.now() });
+      history = history.slice(0, 10);
+      renderHistory();
+      round++;
+    }
+
+    function renderHistory() {
+      historyEl.innerHTML = '';
+      const now = Date.now();
+      history.forEach(({ val, element, timestamp }) => {
+        const secondsAgo = Math.floor((now - timestamp) / 1000);
+        element.innerText = `${val}x (${secondsAgo}s ago)`;
+        historyEl.appendChild(element);
+      });
+    }
+
+    function startGame() {
+      multiplier = 1.00;
+      crashed = false;
+      crashPoint = +(Math.max(1.01, (1 / (Math.random() ** 2))).toFixed(2));
+      resultEl.innerText = "";
+      let interval = setInterval(() => {
+        multiplier += 0.05;
+        multiplierEl.innerText = multiplier.toFixed(2) + "x";
+        renderHistory();
+        if (placed && autoInput.value && parseFloat(autoInput.value) <= multiplier) {
+          cashOut(true);
+        }
+        if (multiplier >= crashPoint) {
+          clearInterval(interval);
+          if (placed && !crashed) {
+            resultEl.innerHTML = `<span class='red'>You lost at ${crashPoint}x</span>`;
+            placed = false;
+          }
+          updateHistory(crashPoint);
+          setTimeout(startCountdown, 10000);
+        }
+      }, 100);
+    }
+
+    function startCountdown() {
+      let t = 10;
+      countdownEl.innerText = `Next round in: ${t}s`;
+      betBtn.disabled = false;
+      betInput.disabled = false;
+      autoInput.disabled = false;
+      let timer = setInterval(() => {
+        t--;
+        countdownEl.innerText = `Next round in: ${t}s`;
+        if (t <= 0) {
+          clearInterval(timer);
+          betBtn.disabled = true;
+          betInput.disabled = true;
+          autoInput.disabled = true;
+          startGame();
+        }
+      }, 1000);
+    }
+
+    function placeBet() {
+      if (placed) return;
+      bet = parseInt(betInput.value);
+      if (isNaN(bet) || bet <= 0 || bet > balance) return alert("Invalid Bet");
+      balance -= bet;
+      balanceEl.innerText = balance;
+      placed = true;
+    }
+
+    function cashOut(auto = false) {
+      if (!placed || crashed) return;
+      let win = Math.floor(bet * multiplier);
+      balance += win;
+      balanceEl.innerText = balance;
+      resultEl.innerHTML = `<span class='green'>${auto ? 'Auto' : 'Manual'} Cash Out: Won ${win} coins at ${multiplier.toFixed(2)}x</span>`;
+      personalEl.innerText = `Bet: ${bet}, Cashout: ${multiplier.toFixed(2)}x, Win: ${win}`;
+      placed = false;
+      crashed = true;
+    }
+
+    startCountdown();
+  </script>
+<style>
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to right, #0f172a, #1e293b);
+    color: white;
+    padding-bottom: 60px;
+  }
+  .ahameed-footer {
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    color: #facc15;
+    font-weight: bold;
+    margin-top: 40px;
+  }
+</style>
+<div class="ahameed-footer">🚀 Powered by Ahameed Playz</div>
+<div style="text-align:center;margin-top:20px;"><a href="index.html" style="display:inline-block;padding:10px 20px;background:yellow;border-radius:5px;text-decoration:none;font-weight:bold;">Return to Home</a></div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("animate-up");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".card, .section-divider, .info").forEach(el => {
+    observer.observe(el);
+  });
+});
+</script>
+</body>
+</html>

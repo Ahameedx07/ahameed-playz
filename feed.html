@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ahameed Playz - Feed</title>
+<style>
+    body {
+      margin: 0;
+      background-color: #0f172a;
+      font-family: 'Segoe UI', sans-serif;
+      color: white;
+    }
+    nav {
+      display: flex;
+      justify-content: space-around;
+      background-color: #1e293b;
+      padding: 1rem 0;
+      font-size: 1.5rem;
+    }
+    nav a {
+      color: #facc15;
+      text-decoration: none;
+    }
+    nav a:hover {
+      color: #ffffff;
+    }
+    .feed {
+      padding: 20px;
+      max-width: 720px;
+      margin: auto;
+    }
+    .post {
+      background-color: #1e293b;
+      margin-bottom: 20px;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    }
+    .post img {
+      max-width: 100%;
+      border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .post h3 {
+      color: #38bdf8;
+      margin: 0 0 10px;
+    }
+    .post p {
+      font-size: 15px;
+      color: #e2e8f0;
+      line-height: 1.5;
+    }
+    .timestamp {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-top: 10px;
+      text-align: right;
+    }
+  </style>
+<style>
+@keyframes defendGlow {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 5px cyan; }
+  50% { transform: scale(1.05); box-shadow: 0 0 15px #0ff; }
+}
+button, .button, input[type="submit"] {
+  animation: defendGlow 2s ease-in-out infinite;
+  transition: 0.3s;
+}
+button:hover, .button:hover, input[type="submit"]:hover {
+  transform: scale(1.1);
+  background-color: #444;
+}
+</style>
+
+<style>
+/* Animation CSS */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+  opacity: 0;
+}
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+section {
+  position: relative;
+}
+.section-divider {
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #00f2ff, #1e1e2f);
+  margin: 1rem 0;
+  animation: fadeInUp 1s ease-out forwards;
+}
+.play-btn, .download-btn {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+.play-btn::after, .download-btn::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.2);
+  top: 0;
+  left: -100%;
+  z-index: 0;
+  transition: all 0.5s;
+}
+.play-btn:hover::after, .download-btn:hover::after {
+  left: 0;
+}
+</style>
+</head>
+<body style="font-family: 'Orbitron', sans-serif;">
+<nav>
+<a href="profile.html">👤</a>
+<a href="friends.html">🧑‍🤝‍🧑</a>
+<a href="feed.html">📰</a>
+<a href="leaderboard.html">🏆</a>
+<a href="admin.html">⚙️</a>
+<a href="../chat.html">💬</a>
+</nav>
+<div class="feed">
+<div class="post">
+<img alt="news" src="https://source.unsplash.com/720x400/?technology,ai"/>
+<h3>AI Revolutionizes Web Design</h3>
+<p>Web design is being transformed by artificial intelligence, making user experiences more dynamic and personalized.</p>
+<div class="timestamp">2 mins ago</div>
+</div>
+<div class="post">
+<img alt="news" src="https://source.unsplash.com/720x400/?space,rocket"/>
+<h3>SpaceX Set for Historic Mars Test Flight</h3>
+<p>Elon Musk confirms that the next launch will be a major step toward establishing life on Mars.</p>
+<div class="timestamp">5 hours ago</div>
+</div>
+<div class="post">
+<img alt="news" src="https://source.unsplash.com/720x400/?gaming,tech"/>
+<h3>Gaming Trends 2025</h3>
+<p>Immersive AR and AI-powered gaming are taking the spotlight in 2025's tech revolution.</p>
+<div class="timestamp">1 day ago</div>
+</div>
+</div>
+<div style="text-align:center; margin-top: 50px;">
+<p>Contact: <a href="https://t.me/Ahameed07" target="_blank">Telegram</a></p>
+<p><strong>Powered by Ahameed Playz</strong></p>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        entry.target.classList.add("animate-up");
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll(".card, .section-divider, .info").forEach(el => {
+    observer.observe(el);
+  });
+});
+</script>
+</body>
+</html>

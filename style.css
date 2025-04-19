@@ -1,0 +1,24 @@
+body {
+  background: #121212;
+  font-family: sans-serif;
+  color: white;
+  text-align: center;
+  padding-top: 50px;
+}
+input, button {
+  display: block;
+  margin: 10px auto;
+  padding: 10px;
+  font-size: 16px;
+}
+button {
+  background-color: #1DB954;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+a {
+  color: #1DB954;
+  text-decoration: none;
+}
