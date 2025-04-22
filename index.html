@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -86,23 +85,9 @@
       text-decoration: none;
       font-weight: bold;
       transition: 0.3s;
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
     }
-    .play-btn::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: rgba(255,255,255,0.2);
-      top: 0;
-      left: -100%;
-      z-index: 0;
-      transition: all 0.5s;
-    }
-    .play-btn:hover::after {
-      left: 0;
+    .play-btn:hover {
+      background: #fff;
     }
     .login-section {
       background: #1e1e2f;
@@ -128,14 +113,8 @@
       color: #888;
     }
     @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
     .animate-up {
       animation: fadeInUp 0.8s ease-out forwards;
@@ -151,16 +130,31 @@
       margin: 1rem 0;
       animation: fadeInUp 1s ease-out forwards;
     }
+    .play-btn, .download-btn {
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .play-btn::after, .download-btn::after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.2);
+      top: 0;
+      left: -100%;
+      z-index: 0;
+      transition: all 0.5s;
+    }
+    .play-btn:hover::after, .download-btn:hover::after {
+      left: 0;
+    }
   </style>
 </head>
 <body>
-
   <header>
     <h1>AhameedPlayZ</h1>
-  </header>
-
-  <h2 class="section-title">🎬 Movie Time</h2>
-
+  </header>  <h2 class="section-title">🎬 Movie Time</h2>
   <nav>
     <a href="All.html">🎬 All</a>
     <a href="Hollywood.html">🌎 Hollywood</a>
@@ -170,77 +164,61 @@
     <a href="Hindi_Dubbed.html">🗣️ Hindi Dubbed</a>
     <a href="Korean.html">🇰🇷 Korean</a>
     <a href="IMDB_Top.html">⭐ IMDB Top</a>
-  </nav>
-
-  <div class="divider"></div>
-
-  <h2 class="section-title">🎮 Game Mode</h2>
+  </nav>  <div class="divider"></div>  <h2 class="section-title">🎮 Game Mode</h2>
   <section class="games">
     <div class="section-divider"></div>
-
     <div class="card animate-up">
       <div class="info">
         <h3>Aviator Crash</h3>
         <a class="play-btn" href="Aviator Crash.html">▶️ Play</a>
       </div>
     </div>
-
     <div class="card animate-up">
       <div class="info">
         <h3>Trading Simulator</h3>
         <a class="play-btn" href="Trading Simulator.html">▶️ Play</a>
       </div>
     </div>
-
     <div class="card animate-up">
       <div class="info">
         <h3>Boom Mines</h3>
         <a class="play-btn" href="Boom Mines.html">▶️ Play</a>
       </div>
     </div>
-
     <div class="card animate-up">
       <div class="info">
         <h3>Tap Bomber</h3>
         <a class="play-btn" href="TapBomber.html">▶️ Play</a>
       </div>
     </div>
-
+  </section>  <div class="divider"></div>  <h2 class="section-title">📊 Predictor Zone</h2>
+  <section class="games">
+    <div class="section-divider"></div>
     <div class="card animate-up">
       <div class="info">
         <h3>Predictor v2</h3>
         <a class="play-btn" href="Predictor%20v2.html">▶️ Play</a>
       </div>
     </div>
-
     <div class="card animate-up">
       <div class="info">
         <h3>VIP Aviator Predictor</h3>
         <a class="play-btn" href="VIP Aviator Predictor.html">▶️ Play</a>
       </div>
     </div>
-
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="login-section">
+  </section>  <div class="divider"></div>  <section class="login-section">
     <div class="section-divider"></div>
     <h2>Customer Access</h2>
     <a href="pages/login.html">🔐 Login</a> |
     <a href="pages/register.html">✍️ Register</a> |
     <a href="contact.html">Contract</a>
-  </section>
-
-  <footer>
+  </section>  <footer>
     © 2025 AhameedPlayZ. All rights reserved.
-  </footer>
-
-  <script>
+  </footer>  <script>
     document.addEventListener("DOMContentLoaded", () => {
       const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-          if (entry.isIntersecting) {
+          if(entry.isIntersecting){
             entry.target.classList.add("animate-up");
           }
         });
@@ -250,6 +228,5 @@
         observer.observe(el);
       });
     });
-  </script>
-</body>
-</html>
+  </script></body>
+  </html>
