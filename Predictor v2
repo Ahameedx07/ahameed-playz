@@ -1,0 +1,219 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🚀 Game Predictor - Real Algorithm</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Orbitron', sans-serif;
+      background: #0a0a0a;
+      color: #ffffff;
+      text-align: center;
+      padding: 20px;
+      position: relative;
+      min-height: 100vh;
+    }
+    h1 {
+      font-size: 2.4em;
+      color: #00ffc3;
+    }
+    .selector-btn, .start-btn, .select-count {
+      background-color: #00ffc3;
+      border: none;
+      padding: 10px 20px;
+      margin: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 10px;
+    }
+    .select-count {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+    .game {
+      display: none;
+      background-color: #1e1e1e;
+      padding: 25px;
+      border-radius: 15px;
+      margin-top: 20px;
+      box-shadow: 0 0 15px #00ffc3;
+      position: relative;
+    }
+    .output {
+      font-size: 2em;
+      margin: 20px 0;
+      color: #00ff88;
+    }
+    .status {
+      color: #ccc;
+    }
+    .seed-inputs {
+      margin: 10px 0;
+      display: none;
+    }
+    .seed-inputs input {
+      margin: 5px;
+      padding: 8px;
+      font-size: 0.9em;
+      border-radius: 5px;
+    }
+    .toggle-seed {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: none;
+      color: #00ffc3;
+      border: none;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    .seed-log {
+      font-size: 0.85em;
+      color: #aaa;
+      margin-top: 15px;
+    }
+    .predictions {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .prediction-box {
+      background: #333;
+      padding: 10px 15px;
+      border-radius: 10px;
+      box-shadow: 0 0 5px #00ffc3;
+      font-size: 1.2em;
+    }
+    footer {
+      position: relative;
+      margin-top: 60px;
+      padding: 15px 0;
+      font-size: 0.9em;
+      color: #666;
+      border-top: 1px solid #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>🚀 Game Predictor</h1>
+  <div>
+    <button class="selector-btn" onclick="showGame('aviator')">✈️ Aviator</button>
+    <button class="selector-btn" onclick="showGame('crash')">💥 Crash</button>
+    <button class="selector-btn" onclick="showGame('jetx')">🛩️ JetX</button>
+    <button class="selector-btn" onclick="showGame('mines')">💣 Mines</button>
+    <button class="selector-btn" onclick="showGame('plinko')">🎯 Plinko</button>
+  </div>
+  <div id="games"></div>
+  <footer>
+    © 2025 Ahameed Playz. All rights reserved.
+  </footer>
+  <script>
+    const gameIDs = ['aviator', 'crash', 'jetx', 'mines', 'plinko'];
+    const gamesDiv = document.getElementById('games');function showGame(game) {
+  gameIDs.forEach(id => {
+    document.getElementById(id).style.display = (id === game) ? 'block' : 'none';
+  });
+}
+
+function createGame(game, algorithmFn) {
+  const div = document.createElement('div');
+  div.className = 'game';
+  div.id = game;
+  div.innerHTML = `
+    <button class="toggle-seed" onclick="toggleSeed('${game}')">♻️</button>
+    <select class="select-count" id="${game}Count">
+      <option value="1">🔻 1</option>
+      <option value="2">🔻 2</option>
+      <option value="3">🔻 3</option>
+    </select>
+    <h2>${game.toUpperCase()}</h2>
+    <div class="seed-inputs" id="${game}Inputs">
+      <input type="text" placeholder="Seed 1 (optional)" id="${game}Seed1">
+      <input type="text" placeholder="Seed 2 (optional)" id="${game}Seed2">
+      <input type="text" placeholder="Seed 3 (optional)" id="${game}Seed3">
+    </div>
+    <div class="predictions" id="${game}Predictions"></div>
+    <div class="status" id="${game}Status">Ready</div>
+    <button class="start-btn" onclick="runAlgorithm('${game}', ${algorithmFn})">Start</button>
+    <div class="seed-log" id="${game}SeedLog"></div>
+  `;
+  gamesDiv.appendChild(div);
+}
+
+function toggleSeed(game) {
+  const inputBox = document.getElementById(`${game}Inputs`);
+  inputBox.style.display = inputBox.style.display === 'none' ? 'block' : 'none';
+}
+
+gameIDs.forEach(id => {
+  let algo;
+  switch(id) {
+    case 'aviator': algo = aviatorAlgorithm; break;
+    case 'crash': algo = crashAlgorithm; break;
+    case 'jetx': algo = jetxAlgorithm; break;
+    case 'mines': algo = minesAlgorithm; break;
+    case 'plinko': algo = plinkoAlgorithm; break;
+  }
+  createGame(id, algo.name);
+});
+
+function runAlgorithm(game, algorithm) {
+  const status = document.getElementById(`${game}Status`);
+  const predictionsBox = document.getElementById(`${game}Predictions`);
+  const seedLog = document.getElementById(`${game}SeedLog`);
+  const count = parseInt(document.getElementById(`${game}Count`).value);
+
+  predictionsBox.innerHTML = '';
+  seedLog.innerHTML = '';
+  status.textContent = 'Calculating...';
+
+  const seeds = Array.from({ length: count }, (_, i) => {
+    const input = document.getElementById(`${game}Seed${i + 1}`);
+    return input && input.value.trim() ? input.value.trim() : Math.random().toString(36).substr(2, 10);
+  });
+
+  setTimeout(() => {
+    const results = seeds.map((s, i) => `<div class='prediction-box'>${eval(algorithm)(s)}</div>`);
+    predictionsBox.innerHTML = results.join('');
+    status.textContent = 'Done';
+    seedLog.innerHTML = seeds.map((s, i) => `Seed: <code>${s}</code> | Hash: <code>${btoa(s).substr(0, 12)}</code>`).join('<br>');
+  }, 4000);
+}
+
+// Placeholder simplified algorithms (replace with real versions)
+function aviatorAlgorithm(seed) {
+  const hash = parseInt(seed.slice(0, 6), 36);
+  let multiplier = ((hash % 9800) / 1000 + 1).toFixed(2);
+  return multiplier + 'x';
+}
+
+function crashAlgorithm(seed) {
+  const num = parseInt(seed.slice(0, 8), 36);
+  let crashPoint = ((Math.log(num % 10000) / 3.2) + 1.1).toFixed(2);
+  return crashPoint + 'x';
+}
+
+function jetxAlgorithm(seed) {
+  const val = parseInt(seed.slice(0, 6), 36);
+  return ((val % 15000) / 1000 + 1).toFixed(2) + 'x';
+}
+
+function minesAlgorithm(seed) {
+  const cells = 25;
+  const mines = 1 + (parseInt(seed, 36) % 8);
+  return `${mines} Mines on ${cells} Cells`;
+}
+
+function plinkoAlgorithm(seed) {
+  const options = ['0.5x', '1x', '2x', '5x', '10x'];
+  const index = parseInt(seed, 36) % options.length;
+  return options[index];
+}
+
+  </script>
+</body>
+</html>
