@@ -1,31 +1,126 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>🌐 All</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌐 All Movies & Shows</title>
   <style>
+    body {
+      background: #121212;
+      color: white;
+      text-align: center;
+      padding: 50px;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
     /* Animation CSS */
     @keyframes fadeInUp {
       from {
         opacity: 0;
         transform: translateY(20px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
+
     .animate-up {
       animation: fadeInUp 0.8s ease-out forwards;
       opacity: 0;
     }
-    .card:hover {
-      transform: scale(1.05);
+
+    /* Movie card styles */
+    .movie-card {
+      display: inline-block;
+      width: 300px;
+      margin: 20px;
+      background: #1e1e2f;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       transition: transform 0.3s ease;
     }
-    section {
-      position: relative;
+
+    .movie-card:hover {
+      transform: scale(1.05);
     }
+
+    .movie-card img {
+      width: 100%;
+      height: auto;
+    }
+
+    .movie-card h3 {
+      margin: 15px 0;
+      font-size: 1.25rem;
+    }
+
+    .movie-card p {
+      margin-bottom: 15px;
+      font-size: 1rem;
+    }
+
+    .download-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #ff6600;
+      color: #fff;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+    }
+
+    .download-btn:hover {
+      background-color: #ff8533;
+    }
+
+    /* Modal styles */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+      color: #121212;
+      text-align: left;
+    }
+
+    .modal-content h3 {
+      margin-bottom: 10px;
+    }
+
+    .modal-content p {
+      margin-bottom: 10px;
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 30px;
+      color: #121212;
+      cursor: pointer;
+    }
+
     .section-divider {
       width: 100%;
       height: 4px;
@@ -33,142 +128,115 @@
       margin: 1rem 0;
       animation: fadeInUp 1s ease-out forwards;
     }
-    .play-btn, .download-btn {
-      position: relative;
-      overflow: hidden;
-      z-index: 1;
-      display: inline-block;
-      padding: 15px 30px;
-      background-color: #ff6600;
-      color: white;
-      border-radius: 5px;
-      font-size: 16px;
-      text-decoration: none;
-      text-align: center;
-      cursor: pointer;
-      transition: transform 0.3s ease, background-color 0.3s ease;
-    }
-    .download-btn::after {
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: rgba(255,255,255,0.2);
-      top: 0;
-      left: -100%;
-      z-index: 0;
-      transition: all 0.5s;
-    }
-    .download-btn:hover::after {
-      left: 0;
-    }
-    .download-btn:hover {
-      transform: scale(1.1);
-      background-color: #e65c00;
-    }
 
-    /* Modal styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1000;
-      padding-top: 60px;
-      left: 0; top: 0;
-      width: 100%; height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.7);
-      animation: fadeIn 0.3s ease;
-    }
-    .modal-content {
-      background-color: #1e1e2f;
-      margin: auto;
-      padding: 20px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 500px;
-      color: white;
-      position: relative;
-      animation: fadeInUp 0.4s ease-out;
-    }
-    .close {
-      position: absolute;
-      top: 10px; right: 20px;
-      color: #ff6600;
-      font-size: 30px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0} to {opacity: 1}
-    }
-
-    /* Back to Home Button */
+    /* Back to Home button */
     .back-home-btn {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 15px 25px;
-      background-color: #1e1e2f;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      font-size: 18px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
+      display: inline-block;
+      margin: 30px auto;
+      padding: 10px 20px;
+      background: #00f2ff;
+      color: #121212;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00f2ff90;
+      transition: all 0.3s ease;
     }
+
     .back-home-btn:hover {
-      background-color: #ff6600;
+      background: #1e1e2f;
+      color: #fff;
+      box-shadow: 0 0 15px #00f2ff;
     }
   </style>
 </head>
-<body style="background:#121212; color:white; text-align:center; padding:50px;">
-  <h1>🎬 All</h1>
-  <p>Movie links for All will go here.</p>
 
-  <!-- Movie Card: বরবাদ (২০২৫) (This will now be at the top) -->
-  <div class="movie-card animate-up" style="margin-bottom:20px;">
-    <img src="144b.png" alt="বরবাদ ২০২৫ Poster" style="width:100%; border-radius:10px;">
-    <h3>বরবাদ (২০২৫)</h3>
-    <p><strong>অভিনয়ে:</strong> শাকিব খান, যিশু সেনগুপ্ত, ইধিকা পাল</p>
-    <a href="#" class="download-btn" onclick="openModal()">Download</a>
+<body>
+
+  <h1>🎬 All Movies & Shows</h1>
+  <p>Latest collection with Drive Download Links</p>
+
+  <!-- Movie Cards -->
+
+  <div class="movie-card animate-up">
+    <img src="https://upload.wikimedia.org/wikipedia/en/5/5f/Aladdin_2019.png" alt="Aladdin 2019">
+    <h3>Aladdin (2019)</h3>
+    <p>Language: Hindi<br>Quality: HD<br>Format: Movie</p>
+    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Aladdin (2019)', 'Hindi', 'HD', 'Movie', 'https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view')">Download via Google Drive</a>
   </div>
 
-  <!-- Modal for বরবাদ (২০২৫) -->
-  <div id="popup-modal" class="modal">
+  <div class="section-divider"></div>
+
+  <div class="movie-card animate-up">
+    <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Raaj_Babu_poster.jpg" alt="Raaj Babu">
+    <h3>Raaj Babu (2014)</h3>
+    <p>Language: Hindi<br>Quality: SD<br>Format: Movie</p>
+    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Raaj Babu (2014)', 'Hindi', 'SD', 'Movie', 'https://drive.google.com/file/d/19W1vUYzNtKYhJL5__7Dv8iH9ziwlgFCq/view')">Download via Google Drive</a>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="movie-card animate-up">
+    <img src="https://upload.wikimedia.org/wikipedia/en/e/ed/Ben_10_Omniverse_title_card.png" alt="Ben 10 Omniverse">
+    <h3>Ben 10 Omniverse (Seasons 7–8)</h3>
+    <p>Language: Hindi Dubbed<br>Quality: 720p<br>Format: TV Series</p>
+    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Ben 10 Omniverse (Seasons 7–8)', 'Hindi Dubbed', '720p', 'TV Series', 'https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view')">Download via Google Drive</a>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="movie-card animate-up">
+    <img src="https://upload.wikimedia.org/wikipedia/en/e/e5/Avatar_The_Way_of_Water_poster.jpg" alt="Avatar 2">
+    <h3>Avatar: The Way of Water (2022)</h3>
+    <p>Language: Hindi Dubbed<br>Quality: HD<br>Format: Movie</p>
+    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Avatar: The Way of Water (2022)', 'Hindi Dubbed', 'HD', 'Movie', 'https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view')">Download via Google Drive</a>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <div class="movie-card animate-up">
+    <img src="144b.png" alt="বরবাদ ২০২৫ Poster">
+    <h2>বরবাদ (২০২৫)</h2>
+    <p><strong>অভিনয়ে:</strong> শাকিব খান, যিশু সেনগুপ্ত, ইধিকা পাল</p>
+    <a href="javascript:void(0);" class="download-btn" onclick="openModal('বরবাদ (২০২৫)', 'Bengali', 'HD', 'Movie', 'https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view?usp=drive_link')">ডাউনলোড করুন</a>
+  </div>
+
+  <div class="section-divider"></div>
+
+  <!-- Modal -->
+  <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">&times;</span>
-      <h2>বরবাদ (২০২৫)</h2>
-      <p><strong>পরিচালক:</strong> মেহেদী হাসান হৃদয়</p>
-      <p><strong>অভিনয়:</strong> শাকিব খান, যিশু সেনগুপ্ত, ইধিকা পাল</p>
-      <p><strong>বাজেট:</strong> ৳১৫–১৮ কোটি</p>
-      <p><strong>গল্প:</strong> অতীতের প্রেমে ক্ষতবিক্ষত আরিয়ান মির্জা তার বাবার পরামর্শে প্রতিশোধের পথে যাত্রা শুরু করে।</p>
-      <a href="https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view?usp=drive_link" 
-         target="_blank" class="download-btn">Start Download</a>
+      <h3 id="movie-title"></h3>
+      <p><strong>Language:</strong> <span id="movie-language"></span></p>
+      <p><strong>Quality:</strong> <span id="movie-quality"></span></p>
+      <p><strong>Format:</strong> <span id="movie-format"></span></p>
+      <a id="final-download" class="download-btn" target="_blank">Final Download</a>
     </div>
   </div>
 
-  <!-- Movie Card: Kesari 2 -->
-  <div class="movie-card animate-up" style="margin-bottom:20px;">
-    <img src="https://path.to/your/uploaded/image/kesari2.jpg" alt="Kesari Chapter 2 Poster" style="width:100%; border-radius:10px;">
-    <h3>Kesari Chapter 2 (2025)</h3>
-    <p>Hindi [Best Quality Print] HDTS</p>
-    <a href="https://bbbb.8d5398cf59ea7530fac7a722897c7e1c.r2.cloudflarestorage.com/73905178001b4291ad58e4a907104530/Kesari%20Chapter%202%202025%20Hindi%20HDTC%201080p.mkv?X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=446cfd2059ca7524a25cfbc29f4621f7%2F20250419%2Fauto%2Fs3%2Faws4_request&X-Amz-Date=20250419T060638Z&X-Amz-SignedHeaders=host&X-Amz-Expires=21600&X-Amz-Signature=dff48c3ec369eca6c3e97892aed05021c32f8263766384a2af4a64fa3075ed00" 
-         class="download-btn" target="_blank">Download</a>
-  </div>
-
   <!-- Back to Home Button -->
-  <button class="back-home-btn" onclick="window.location.href='index.html';">Back to Home</button>
+  <a href="index.html" class="back-home-btn">Back to Home</a>
 
   <script>
-    function openModal() {
-      document.getElementById('popup-modal').style.display = "block";
+    function openModal(title, language, quality, format, downloadLink) {
+      document.getElementById("movie-title").textContent = title;
+      document.getElementById("movie-language").textContent = language;
+      document.getElementById("movie-quality").textContent = quality;
+      document.getElementById("movie-format").textContent = format;
+      document.getElementById("final-download").setAttribute("href", downloadLink);
+
+      var modal = document.getElementById("myModal");
+      modal.style.display = "flex";
     }
+
     function closeModal() {
-      document.getElementById('popup-modal').style.display = "none";
+      var modal = document.getElementById("myModal");
+      modal.style.display = "none";
     }
-    window.onclick = function(event) {
-      const modal = document.getElementById('popup-modal');
+
+    window.onclick = function (event) {
+      var modal = document.getElementById("myModal");
       if (event.target == modal) {
         modal.style.display = "none";
       }
@@ -176,4 +244,5 @@
   </script>
 
 </body>
-    </html>
+
+  </html>
