@@ -1,248 +1,179 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🌐 All Movies & Shows</title>
+  <title>Movies & Download</title>
   <style>
     body {
-      background: #121212;
-      color: white;
-      text-align: center;
-      padding: 50px;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
     }
 
-    h1 {
-      font-size: 2.5rem;
+    .container {
+      width: 80%;
+      margin: 0 auto;
     }
 
-    /* Animation CSS */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .animate-up {
-      animation: fadeInUp 0.8s ease-out forwards;
-      opacity: 0;
-    }
-
-    /* Movie card styles */
     .movie-card {
-      display: inline-block;
-      width: 300px;
-      margin: 20px;
-      background: #1e1e2f;
-      border-radius: 10px;
-      overflow: hidden;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
-      transition: transform 0.3s ease;
+      background-color: #fff;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
     .movie-card:hover {
       transform: scale(1.05);
+      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     }
 
     .movie-card img {
       width: 100%;
       height: auto;
+      border-radius: 8px;
     }
 
     .movie-card h3 {
-      margin: 15px 0;
-      font-size: 1.25rem;
+      margin-top: 10px;
+      font-size: 1.5em;
+      color: #333;
     }
 
     .movie-card p {
-      margin-bottom: 15px;
-      font-size: 1rem;
+      font-size: 1em;
+      color: #666;
+      margin: 10px 0;
     }
 
     .download-btn {
       display: inline-block;
       padding: 10px 20px;
-      background-color: #ff6600;
-      color: #fff;
-      border-radius: 5px;
+      background-color: #007bff;
+      color: white;
       text-decoration: none;
-      font-weight: bold;
+      border-radius: 5px;
       transition: all 0.3s ease;
     }
 
     .download-btn:hover {
-      background-color: #ff8533;
+      background-color: #0056b3;
     }
 
-    /* Modal styles */
+    /* Modal Styles */
     .modal {
       display: none;
       position: fixed;
-      top: 0;
+      z-index: 1;
       left: 0;
+      top: 0;
       width: 100%;
       height: 100%;
-      background-color: rgba(0, 0, 0, 0.7);
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4);
+      padding-top: 60px;
     }
 
     .modal-content {
-      background-color: #fff;
+      background-color: #fefefe;
+      margin: 5% auto;
       padding: 20px;
-      border-radius: 10px;
-      width: 400px;
-      color: #121212;
-      text-align: left;
-    }
-
-    .modal-content h3 {
-      margin-bottom: 10px;
-    }
-
-    .modal-content p {
-      margin-bottom: 10px;
+      border: 1px solid #888;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 8px;
     }
 
     .close {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      font-size: 30px;
-      color: #121212;
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
       cursor: pointer;
     }
 
-    .section-divider {
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(to right, #00f2ff, #1e1e2f);
-      margin: 1rem 0;
-      animation: fadeInUp 1s ease-out forwards;
-    }
-
-    /* Back to Home button */
-    .back-home-btn {
-      display: inline-block;
-      margin: 30px auto;
-      padding: 10px 20px;
-      background: #00f2ff;
-      color: #121212;
+    .close:hover,
+    .close:focus {
+      color: black;
       text-decoration: none;
-      font-weight: bold;
-      border-radius: 8px;
-      box-shadow: 0 0 10px #00f2ff90;
-      transition: all 0.3s ease;
-    }
-
-    .back-home-btn:hover {
-      background: #1e1e2f;
-      color: #fff;
-      box-shadow: 0 0 15px #00f2ff;
+      cursor: pointer;
     }
   </style>
 </head>
-
 <body>
 
-  <h1>🎬 All Movies & Shows</h1>
-  <p>Latest collection with Drive Download Links</p>
-
-  <!-- Movie Cards -->
-
-  <div class="movie-card animate-up">
-    <img src="https://upload.wikimedia.org/wikipedia/en/5/5f/Aladdin_2019.png" alt="Aladdin 2019">
-    <h3>Aladdin (2019)</h3>
-    <p>Language: Hindi<br>Quality: HD<br>Format: Movie</p>
-    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Aladdin (2019)', 'Hindi', 'HD', 'Movie', 'https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view')">Download via Google Drive</a>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <div class="movie-card animate-up">
-    <img src="https://upload.wikimedia.org/wikipedia/en/8/87/Raaj_Babu_poster.jpg" alt="Raaj Babu">
-    <h3>Raaj Babu (2014)</h3>
-    <p>Language: Hindi<br>Quality: SD<br>Format: Movie</p>
-    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Raaj Babu (2014)', 'Hindi', 'SD', 'Movie', 'https://drive.google.com/file/d/19W1vUYzNtKYhJL5__7Dv8iH9ziwlgFCq/view')">Download via Google Drive</a>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <div class="movie-card animate-up">
-    <img src="https://upload.wikimedia.org/wikipedia/en/e/ed/Ben_10_Omniverse_title_card.png" alt="Ben 10 Omniverse">
-    <h3>Ben 10 Omniverse (Seasons 7–8)</h3>
-    <p>Language: Hindi Dubbed<br>Quality: 720p<br>Format: TV Series</p>
-    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Ben 10 Omniverse (Seasons 7–8)', 'Hindi Dubbed', '720p', 'TV Series', 'https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view')">Download via Google Drive</a>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <div class="movie-card animate-up">
-    <img src="https://upload.wikimedia.org/wikipedia/en/e/e5/Avatar_The_Way_of_Water_poster.jpg" alt="Avatar 2">
-    <h3>Avatar: The Way of Water (2022)</h3>
-    <p>Language: Hindi Dubbed<br>Quality: HD<br>Format: Movie</p>
-    <a href="javascript:void(0);" class="download-btn" onclick="openModal('Avatar: The Way of Water (2022)', 'Hindi Dubbed', 'HD', 'Movie', 'https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view')">Download via Google Drive</a>
-  </div>
-
-  <div class="section-divider"></div>
-
-  <div class="movie-card animate-up">
-    <img src="144b.png" alt="বরবাদ ২০২৫ Poster">
-    <h2>বরবাদ (২০২৫)</h2>
+<div class="container">
+  <!-- বরবাদ (২০২৫) -->
+  <div class="movie-card">
+    <img src="বরবাদ.jpg" alt="বরবাদ (২০২৫)">
+    <h3>বরবাদ (২০২৫)</h3>
     <p><strong>অভিনয়ে:</strong> শাকিব খান, যিশু সেনগুপ্ত, ইধিকা পাল</p>
-    <a href="javascript:void(0);" class="download-btn" onclick="openModal('বরবাদ (২০২৫)', 'Bengali', 'HD', 'Movie', 'https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view?usp=drive_link')">ডাউনলোড করুন</a>
+    <p><strong>পরিচালক:</strong> সানাউল হক</p>
+    <p><strong>বাজেট:</strong> ৫-৬ কোটি টাকা</p>
+    <p><strong>আয়:</strong> ১০-১২ কোটি টাকা</p>
+    <a href="https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view" target="_blank" class="download-btn">Download</a>
   </div>
 
-  <div class="section-divider"></div>
-
-  <!-- Modal -->
-  <div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h3 id="movie-title"></h3>
-      <p><strong>Language:</strong> <span id="movie-language"></span></p>
-      <p><strong>Quality:</strong> <span id="movie-quality"></span></p>
-      <p><strong>Format:</strong> <span id="movie-format"></span></p>
-      <a id="final-download" class="download-btn" target="_blank">Final Download</a>
-    </div>
+  <!-- Avatar: The Way of Water (2022) -->
+  <div class="movie-card">
+    <img src="avatar2.jpg" alt="Avatar: The Way of Water (2022)">
+    <h3>Avatar: The Way of Water (2022)</h3>
+    <p><strong>অভিনয়ে:</strong> স্যাম ওয়ার্থিংটন, জোয়েল এডগারটন</p>
+    <p><strong>পরিচালক:</strong> জেমস ক্যামেরন</p>
+    <p><strong>বাজেট:</strong> $350 মিলিয়ন</p>
+    <p><strong>আয়:</strong> $2.3 বিলিয়ন</p>
+    <a href="https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view" target="_blank" class="download-btn">Download</a>
   </div>
 
-  <!-- Back to Home Button -->
-  <a href="index.html" class="back-home-btn">Back to Home</a>
+  <!-- Ben 10 Omniverse (Seasons 7–8) -->
+  <div class="movie-card">
+    <img src="ben10_s7_8.jpg" alt="Ben 10 Omniverse (Seasons 7–8)">
+    <h3>Ben 10 Omniverse (Seasons 7–8)</h3>
+    <p><strong>অভিনয়ে:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+    <p><strong>পরিচালক:</strong> ডিউক ফিল্ড</p>
+    <p><strong>বাজেট:</strong> $1.6 মিলিয়ন (প্রতি পর্ব)</p>
+    <p><strong>আয়:</strong> $10+ মিলিয়ন</p>
+    <a href="https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view" target="_blank" class="download-btn">Download</a>
+  </div>
 
-  <script>
-    function openModal(title, language, quality, format, downloadLink) {
-      document.getElementById("movie-title").textContent = title;
-      document.getElementById("movie-language").textContent = language;
-      document.getElementById("movie-quality").textContent = quality;
-      document.getElementById("movie-format").textContent = format;
-      document.getElementById("final-download").setAttribute("href", downloadLink);
+  <!-- Raaj Babu (2014) -->
+  <div class="movie-card">
+    <img src="raaj_babu.jpg" alt="Raaj Babu (2014)">
+    <h3>Raaj Babu (2014)</h3>
+    <p><strong>অভিনয়ে:</strong> শাকিব খান, মনি রত্ন, নিপুনা</p>
+    <p><strong>পরিচালক:</strong> সিদ্দিক</p>
+    <p><strong>বাজেট:</strong> ₹৩৫ কোটি</p>
+    <p><strong>আয়:</strong> ₹১০০ কোটি</p>
+    <a href="https://drive.google.com/file/d/19W1vUYzNtKYhJL5__7Dv8iH9ziwlgFCq/view" target="_blank" class="download-btn">Download</a>
+  </div>
 
-      var modal = document.getElementById("myModal");
-      modal.style.display = "flex";
-    }
+  <!-- Aladdin (2019) -->
+  <div class="movie-card">
+    <img src="aladdin.jpg" alt="Aladdin (2019)">
+    <h3>Aladdin (2019)</h3>
+    <p><strong>অভিনয়ে:</strong> উইল স্মিথ, মেনা মাসুদ</p>
+    <p><strong>পরিচালক:</strong> গাই রিচি</p>
+    <p><strong>বাজেট:</strong> $183 মিলিয়ন</p>
+    <p><strong>আয়:</strong> $1.05 বিলিয়ন</p>
+    <a href="https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view" target="_blank" class="download-btn">Download</a>
+  </div>
 
-    function closeModal() {
-      var modal = document.getElementById("myModal");
-      modal.style.display = "none";
-    }
+  <!-- Ben 10 Omniverse (Seasons 4–6) -->
+  <div class="movie-card">
+    <img src="ben10_s4_6.jpg" alt="Ben 10 Omniverse (Seasons 4–6)">
+    <h3>Ben 10 Omniverse (Seasons 4–6)</h3>
+    <p><strong>অভিনয়ে:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+    <p><strong>পরিচালক:</strong> ডিউক ফিল্ড</p>
+    <p><strong>বাজেট:</strong> $1.6 মিলিয়ন (প্রতি পর্ব)</p>
+    <p><strong>আয়:</strong> $10+ মিলিয়ন</p>
+    <a href="https://drive.google.com/file/d/1WLe0khdlev1282515bDzNe99D7-Av7mT/view" target="_blank" class="download-btn">Download</a>
+  </div>
 
-    window.onclick = function (event) {
-      var modal = document.getElementById("myModal");
-      if (event.target == modal) {
-        modal.style.display = "none";
-      }
-    }
-  </script>
+</div>
 
 </body>
-
-  </html>
+      </html>
