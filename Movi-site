@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ahameed PlayZ - Professional Movie Hub</title>
+    <style>
+        :root {
+            --primary: #E50914;
+            --dark: #141414;
+            --light: #FFFFFF;
+            --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background: var(--dark);
+            color: var(--light);
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(180deg, rgba(20,20,20,0.95) 50%, transparent 100%);
+            padding: 20px 50px;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Main Content */
+        .main {
+            margin-top: 100px;
+            padding: 30px 50px;
+        }
+
+        /* Movie Categories */
+        .category-section {
+            margin-bottom: 50px;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-left: 10px;
+            border-left: 5px solid var(--primary);
+        }
+
+        .movies-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        /* Movie Card */
+        .movie-card {
+            background: #1A1A1A;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(229,9,20,0.2);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 330px;
+            object-fit: cover;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        /* Movie Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 2000;
+            animation: modalIn 0.4s forwards;
+        }
+
+        .modal-content {
+            background: var(--dark);
+            width: 90%;
+            max-width: 800px;
+            margin: 2% auto;
+            border-radius: 15px;
+            padding: 30px;
+            position: relative;
+        }
+
+        /* Download Section */
+        .download-options {
+            margin-top: 30px;
+            display: grid;
+            gap: 15px;
+        }
+
+        .download-btn {
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(229,9,20,0.4);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <a href="#" class="logo">Ahameed PlayZ</a>
+    </header>
+
+    <main class="main">
+        <!-- Recently Viewed -->
+        <section class="category-section">
+            <h2 class="category-title">Recently Viewed</h2>
+            <div class="movies-grid" id="recently-viewed"></div>
+        </section>
+
+        <!-- Popular Movies -->
+        <section class="category-section">
+            <h2 class="category-title">Popular Movies</h2>
+            <div class="movies-grid" id="popular-movies"></div>
+        </section>
+
+        <!-- Upcoming Movies -->
+        <section class="category-section">
+            <h2 class="category-title">Coming Soon</h2>
+            <div class="movies-grid" id="upcoming-movies"></div>
+        </section>
+    </main>
+
+    <!-- Movie Modal -->
+    <div class="modal" id="movieModal">
+        <div class="modal-content">
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        // TMDB API Configuration
+        const API_KEY = 'YOUR_TMDB_API_KEY';
+        const BASE_URL = 'https://api.themoviedb.org/3';
+
+        // User History
+        let userHistory = JSON.parse(localStorage.getItem('movieHistory')) || [];
+
+        // Fetch Movies from TMDB
+        async function fetchMovies(category, elementId) {
+            try {
+                const response = await fetch(`${BASE_URL}/movie/${category}?api_key=${API_KEY}`);
+                const data = await response.json();
+                displayMovies(data.results, elementId);
+            } catch (error) {
+                console.error('Error fetching movies:', error);
+            }
+        }
+
+        // Display Movies
+        function displayMovies(movies, containerId) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = movies.map(movie => `
+                <div class="movie-card" onclick="showMovieDetails(${movie.id})">
+                    <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+                         class="movie-poster" 
+                         alt="${movie.title}">
+                </div>
+            `).join('');
+        }
+
+        // Show Movie Details
+        async function showMovieDetails(movieId) {
+            try {
+                // Update User History
+                userHistory = userHistory.filter(id => id !== movieId);
+                userHistory.unshift(movieId);
+                localStorage.setItem('movieHistory', JSON.stringify(userHistory.slice(0,5)));
+
+                // Fetch Movie Details
+                const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+                const movie = await response.json();
+
+                // Display Modal
+                const modalContent = `
+                    <h2>${movie.title}</h2>
+                    <p>${movie.overview}</p>
+                    <div class="download-options">
+                        <button class="download-btn" onclick="handleDownload(${movieId})">
+                            Download HD
+                        </button>
+                    </div>
+                `;
+                
+                document.getElementById('modalContent').innerHTML = modalContent;
+                document.getElementById('movieModal').style.display = 'block';
+            } catch (error) {
+                console.error('Error fetching movie details:', error);
+            }
+        }
+
+        // Download Handler
+        function handleDownload(movieId) {
+            // Add your custom download logic here
+            alert('Download functionality to be added by admin');
+        }
+
+        // Initialize
+        window.onload = () => {
+            fetchMovies('popular', 'popular-movies');
+            fetchMovies('upcoming', 'upcoming-movies');
+            loadRecentViews();
+        }
+
+        function loadRecentViews() {
+            const container = document.getElementById('recently-viewed');
+            userHistory.forEach(async movieId => {
+                const response = await fetch(`${BASE_URL}/movie/${movieId}?api_key=${API_KEY}`);
+                const movie = await response.json();
+                container.innerHTML += `
+                    <div class="movie-card" onclick="showMovieDetails(${movie.id})">
+                        <img src="https://image.tmdb.org/t/p/w500${movie.poster_path}" 
+                             class="movie-poster" 
+                             alt="${movie.title}">
+                    </div>
+                `;
+            });
+        }
+
+        // Close Modal
+        window.onclick = function(event) {
+            if (event.target.classList.contains('modal')) {
+                document.getElementById('movieModal').style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
