@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ahameed PlayZ - Premium Movie Hub</title>
+  <style>
+    :root {
+      --primary: #ff4081;
+      --secondary: #00bcd4;
+      --dark: #111;
+      --darker: #0a0a0a;
+      --light: #fff;
+      --gray: #1e1e1e;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: var(--dark);
+      color: var(--light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Styles */
+    header {
+      background: linear-gradient(135deg, var(--darker) 0%, #1a1a2e 100%);
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 10;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      background: linear-gradient(to right, var(--primary), #ff8a00);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      letter-spacing: 1px;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 5px rgba(255,64,129,0.5); }
+      to { text-shadow: 0 0 15px rgba(255,64,129,0.8), 0 0 20px rgba(255,138,0,0.6); }
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: center;
+      background: rgba(34,34,34,0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 9;
+      box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+    }
+
+    nav a {
+      padding: 18px 25px;
+      color: var(--light);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    nav a.active-tab {
+      color: var(--primary);
+    }
+
+    nav a.active-tab::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 3px;
+      background: var(--primary);
+      border-radius: 3px;
+      animation: tabUnderline 0.3s ease-out;
+    }
+
+    @keyframes tabUnderline {
+      from { width: 0; }
+      to { width: 60%; }
+    }
+
+    /* Main Content */
+    main {
+      flex: 1;
+      padding: 30px;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .section {
+      display: none;
+      animation: fadeInUp 0.5s ease-out;
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .section h2 {
+      margin: 20px 0 30px;
+      font-size: 1.8rem;
+      color: var(--primary);
+      position: relative;
+      display: inline-block;
+    }
+
+    .section h2::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 50px;
+      height: 4px;
+      background: var(--primary);
+      border-radius: 4px;
+    }
+
+    /* Movie Cards */
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 30px;
+      padding: 20px 0;
+    }
+
+    .card {
+      background: var(--gray);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.4);
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(255,64,129,0.3);
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.8));
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card iframe {
+      width: 100%;
+      height: 240px;
+      border: none;
+      display: block;
+    }
+
+    .card-content {
+      padding: 20px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card-content h3 {
+      margin: 0 0 15px;
+      font-size: 1.2rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.3s;
+    }
+
+    .card:hover .card-content h3 {
+      color: var(--primary);
+    }
+
+    /* Action Buttons */
+    .action-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 15px;
+    }
+
+    .action-btn {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+
+    .action-btn i {
+      margin-right: 8px;
+      font-size: 16px;
+    }
+
+    .btn-details {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-details:hover {
+      background: #f50057;
+      transform: translateY(-2px);
+    }
+
+    .btn-download {
+      background: #4caf50;
+      color: white;
+    }
+
+    .btn-download:hover {
+      background: #388e3c;
+      transform: translateY(-2px);
+    }
+
+    /* Popup Styles */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .popup.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .popup-content {
+      background: linear-gradient(145deg, #222 0%, #1a1a1a 100%);
+      width: 90%;
+      max-width: 500px;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+      position: relative;
+      transform: scale(0.9);
+      transition: transform 0.4s;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .popup.show .popup-content {
+      transform: scale(1);
+    }
+
+    .close-popup {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-size: 28px;
+      color: var(--light);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .close-popup:hover {
+      color: var(--primary);
+      transform: rotate(90deg);
+    }
+
+    .popup h3 {
+      font-size: 1.6rem;
+      margin-bottom: 20px;
+      color: var(--primary);
+    }
+
+    .popup-info {
+      margin: 15px 0;
+      line-height: 1.6;
+    }
+
+    .popup-info strong {
+      color: var(--primary);
+      font-weight: 500;
+      display: inline-block;
+      min-width: 80px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--darker);
+      padding: 30px 20px;
+      text-align: center;
+      margin-top: 50px;
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 20px 0;
+      gap: 15px;
+    }
+
+    .footer-links a {
+      color: var(--light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .copyright {
+      color: var(--light);
+      font-size: 0.9rem;
+      margin-top: 15px;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .card-container {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+
+      nav a {
+        padding: 15px 20px;
+        font-size: 0.9rem;
+      }
+
+      .section h2 {
+        font-size: 1.5rem;
+      }
+
+      .card iframe {
+        height: 200px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      main {
+        padding: 20px 15px;
+      }
+
+      .card-container {
+        grid-template-columns: 1fr;
+      }
+
+      nav {
+        flex-wrap: wrap;
+      }
+
+      nav a {
+        padding: 12px 15px;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+      }
+
+      .action-btn {
+        width: 100%;
+      }
+    }
+  </style>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header>
+    <h1>Ahameed PlayZ</h1>
+  </header>
+
+  <nav>
+    <a href="#" onclick="showSection('home')" class="active-tab">Home</a>
+    <a href="#" onclick="showSection('movies')">Movies</a>
+    <a href="#" onclick="showSection('animation')">Animation</a>
+    <a href="#" onclick="showSection('webseries')">Web Series</a>
+    <a href="#" onclick="showSection('scifi')">Sci-Fi</a>
+  </nav>
+
+  <main>
+    <!-- Home Section -->
+    <section id="home" class="section active">
+      <h2>Latest Releases</h2>
+      <div class="card-container" id="home-cards"></div>
+    </section>
+
+    <!-- Movies Section -->
+    <section id="movies" class="section">
+      <h2>Hollywood Blockbusters</h2>
+      <div class="card-container" id="movies-cards"></div>
+    </section>
+
+    <!-- Animation Section -->
+    <section id="animation" class="section">
+      <h2>Animation Movies</h2>
+      <div class="card-container" id="animation-cards"></div>
+    </section>
+
+    <!-- Web Series Section -->
+    <section id="webseries" class="section">
+      <h2>Popular Web Series</h2>
+      <div class="card-container" id="webseries-cards"></div>
+    </section>
+
+    <!-- Sci-Fi Section -->
+    <section id="scifi" class="section">
+      <h2>Sci-Fi & Fantasy</h2>
+      <div class="card-container" id="scifi-cards"></div>
+    </section>
+  </main>
+
+  <!-- Popup for Movie Details -->
+  <div class="popup" id="popup">
+    <div class="popup-content">
+      <span class="close-popup" onclick="closePopup()">&times;</span>
+      <h3 id="popup-title">Movie Title</h3>
+      
+      <div class="popup-info">
+        <strong>Director:</strong> <span id="popup-director">Loading...</span>
+      </div>
+      <div class="popup-info">
+        <strong>Cast:</strong> <span id="popup-actors">Loading...</span>
+      </div>
+      <div class="popup-info">
+        <strong>Budget:</strong> <span id="popup-budget">Loading...</span>
+      </div>
+      <div class="popup-info">
+        <strong>Revenue:</strong> <span id="popup-revenue">Loading...</span>
+      </div>
+      
+      <div class="action-buttons" style="margin-top: 25px;">
+        <button class="action-btn btn-download" onclick="downloadMovie()">
+          <i class="fas fa-download"></i> Download
+        </button>
+        <button class="action-btn btn-details" onclick="watchTrailer()">
+          <i class="fas fa-play"></i> Trailer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-content">
+      <div class="footer-links">
+        <a href="#">About Us</a>
+        <a href="#">Contact</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <div class="copyright">
+        &copy; 2025 Ahameed PlayZ. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // আপনার মুভি ডাটাবেস - এখানে নতুন মুভি যোগ করুন
+    const moviesData = [
+      {
+        title: "Inception",
+        category: "movies",
+        video: "https://www.youtube.com/embed/YoHD9XEInc0",
+        director: "Christopher Nolan",
+        actors: "Leonardo DiCaprio, Joseph Gordon-Levitt, Ellen Page",
+        budget: "$160 million",
+        revenue: "$836 million",
+        downloadLink: "" // আপনি পরে এখানে লিংক যোগ করবেন
+      },
+      {
+        title: "The Lion King",
+        category: "animation",
+        video: "https://www.youtube.com/embed/7TavVZMewpY",
+        director: "Jon Favreau",
+        actors: "Donald Glover, Beyoncé, James Earl Jones",
+        budget: "$260 million",
+        revenue: "$1.656 billion",
+        downloadLink: ""
+      },
+      {
+        title: "Stranger Things",
+        category: "webseries",
+        video: "https://www.youtube.com/embed/b9EkMc79ZSU",
+        director: "The Duffer Brothers",
+        actors: "Millie Bobby Brown, Finn Wolfhard, Winona Ryder",
+        budget: "$6-8 million per episode",
+        revenue: "N/A",
+        downloadLink: ""
+      },
+      {
+        title: "Interstellar",
+        category: "scifi",
+        video: "https://www.youtube.com/embed/zSWdZVtXT7E",
+        director: "Christopher Nolan",
+        actors: "Matthew McConaughey, Anne Hathaway, Jessica Chastain",
+        budget: "$165 million",
+        revenue: "$677 million",
+        downloadLink: ""
+      },
+      {
+        title: "Spider-Man: Into the Spider-Verse",
+        category: "animation",
+        video: "https://www.youtube.com/embed/g4Hbz2jLxvQ",
+        director: "Bob Persichetti, Peter Ramsey, Rodney Rothman",
+        actors: "Shameik Moore, Jake Johnson, Hailee Steinfeld",
+        budget: "$90 million",
+        revenue: "$375.5 million",
+        downloadLink: ""
+      },
+      {
+        title: "The Matrix",
+        category: "scifi",
+        video: "https://www.youtube.com/embed/m8e-FF8MsqU",
+        director: "The Wachowskis",
+        actors: "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss",
+        budget: "$63 million",
+        revenue: "$463.5 million",
+        downloadLink: ""
+      }
+      // আপনি এখানে আরও মুভি যোগ করতে পারেন
+    ];
+
+    // DOM Elements
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('nav a');
+    const popup = document.getElementById('popup');
+    let currentMovie = null;
+
+    // Show Specific Section
+    function showSection(sectionId) {
+      // Hide all sections
+      sections.forEach(section => {
+        section.classList.remove('active');
+      });
+
+      // Remove active class from all nav links
+      navLinks.forEach(link => {
+        link.classList.remove('active-tab');
+      });
+
+      // Show the selected section
+      document.getElementById(sectionId).classList.add('active');
+
+      // Add active class to clicked nav link
+      document.querySelector(`nav a[onclick*="${sectionId}"]`).classList.add('active-tab');
+
+      // Load data for the section
+      loadSectionData(sectionId);
+    }
+
+    // Load Data for Sections
+    function loadSectionData(sectionId) {
+      let filteredMovies = [];
+
+      if (sectionId === 'home') {
+        // For home page, show latest 6 movies from all categories
+        filteredMovies = [...moviesData].sort(() => 0.5 - Math.random()).slice(0, 6);
+      } else {
+        // For other sections, filter by category
+        filteredMovies = moviesData.filter(movie => movie.category === sectionId);
+      }
+
+      const container = document.getElementById(`${sectionId}-cards`);
+      container.innerHTML = '';
+
+      filteredMovies.forEach(movie => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <iframe src="${movie.video}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <div class="card-content">
+            <h3>${movie.title}</h3>
+            <div class="action-buttons">
+              <button class="action-btn btn-details" onclick="showMovieDetails('${escapeString(movie.title)}', '${escapeString(movie.director)}', '${escapeString(movie.actors)}', '${escapeString(movie.budget)}', '${escapeString(movie.revenue)}', '${movie.video}', '${movie.downloadLink}')">
+                <i class="fas fa-info-circle"></i> Details
+              </button>
+              <button class="action-btn btn-download" onclick="showMovieDetails('${escapeString(movie.title)}', '${escapeString(movie.director)}', '${escapeString(movie.actors)}', '${escapeString(movie.budget)}', '${escapeString(movie.revenue)}', '${movie.video}', '${movie.downloadLink}')">
+                <i class="fas fa-download"></i> Download
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // Show Movie Details in Popup
+    function showMovieDetails(title, director, actors, budget, revenue, video, downloadLink) {
+      currentMovie = { title, director, actors, budget, revenue, video, downloadLink };
+      
+      document.getElementById('popup-title').textContent = title;
+      document.getElementById('popup-director').textContent = director;
+      document.getElementById('popup-actors').textContent = actors;
+      document.getElementById('popup-budget').textContent = budget;
+      document.getElementById('popup-revenue').textContent = revenue;
+      
+      // Show popup with animation
+      popup.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Download Movie
+    function downloadMovie() {
+      if (currentMovie.downloadLink) {
+        window.open(currentMovie.downloadLink, '_blank');
+      } else {
+        alert('Download link will be available soon!');
+      }
+    }
+
+    // Watch Trailer
+    function watchTrailer() {
+      window.open(currentMovie.video, '_blank');
+    }
+
+    // Close Popup
+    function closePopup() {
+      popup.classList.remove('show');
+      document.body.style.overflow = 'auto';
+    }
+
+    // Escape special characters for HTML
+    function escapeString(str) {
+      return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+    }
+
+    // Initialize the page
+    window.onload = function() {
+      showSection('home');
+      
+      // Close popup when clicking outside
+      popup.addEventListener('click', function(e) {
+        if (e.target === popup) {
+          closePopup();
+        }
+      });
+    };
+  </script>
+</body>
+</html>
