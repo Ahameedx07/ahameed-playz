@@ -1,112 +1,166 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Movies & Download</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ahameed | Movies & Downloads</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
+    :root {
+      --primary: #6c5ce7;
+      --accent: #00cec9;
+      --dark-bg: #0f0f1a;
+      --card-bg: #1e1e2f;
+      --text-color: #fff;
+      --muted: #ccc;
+    }
+
     body {
-      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-title img {
+      height: 50px;
+    }
+
+    .logo-title h1 {
+      margin-left: 10px;
+      font-size: 1.6rem;
+      color: #fff;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: 500;
+    }
+
+    nav a:hover {
+      color: #000;
     }
 
     .container {
-      width: 80%;
-      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
     }
 
     .movie-card {
-      background-color: #fff;
-      border-radius: 8px;
-      margin-bottom: 20px;
-      padding: 20px;
-      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s ease;
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
     }
 
     .movie-card:hover {
       transform: scale(1.05);
-      box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
     }
 
     .movie-card img {
       width: 100%;
-      height: auto;
-      border-radius: 8px;
+      display: block;
     }
 
     .movie-card h3 {
-      margin-top: 10px;
-      font-size: 1.5em;
-      color: #333;
+      font-size: 1.3rem;
+      margin: 0.8rem;
     }
 
     .movie-card p {
-      font-size: 1em;
-      color: #666;
-      margin: 10px 0;
+      margin: 0.3rem 0.8rem;
+      font-size: 0.95rem;
+      color: var(--muted);
     }
 
     .download-btn {
       display: inline-block;
+      margin: 1rem 0.8rem;
       padding: 10px 20px;
-      background-color: #007bff;
-      color: white;
+      background: var(--accent);
+      color: #000;
+      border-radius: 30px;
       text-decoration: none;
-      border-radius: 5px;
+      font-weight: bold;
       transition: all 0.3s ease;
     }
 
     .download-btn:hover {
-      background-color: #0056b3;
+      background-color: var(--primary);
+      color: white;
     }
 
-    /* Modal Styles */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 1;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgb(0,0,0);
-      background-color: rgba(0,0,0,0.4);
-      padding-top: 60px;
+    footer {
+      background: #141421;
+      color: var(--muted);
+      text-align: center;
+      padding: 2rem 1rem;
     }
 
-    .modal-content {
-      background-color: #fefefe;
-      margin: 5% auto;
-      padding: 20px;
-      border: 1px solid #888;
-      width: 80%;
-      max-width: 500px;
-      border-radius: 8px;
+    .social-icons {
+      margin: 1rem 0;
     }
 
-    .close {
-      color: #aaa;
-      float: right;
-      font-size: 28px;
-      font-weight: bold;
-      cursor: pointer;
+    .social-icons a {
+      color: var(--accent);
+      font-size: 1.6rem;
+      margin: 0 0.5rem;
+      transition: color 0.3s;
     }
 
-    .close:hover,
-    .close:focus {
-      color: black;
-      text-decoration: none;
-      cursor: pointer;
+    .social-icons a:hover {
+      color: var(--primary);
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav {
+        margin-top: 1rem;
+      }
     }
   </style>
 </head>
 <body>
 
+<!-- Header -->
+<header>
+  <div class="logo-title">
+    <img src="imglogo.png" alt="AhameedFlix Logo" />
+    <h1>AhameedFlix</h1>
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Movies</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<!-- Movie Cards Section -->
 <div class="container">
+
   <!-- বরবাদ (২০২৫) -->
   <div class="movie-card">
     <img src="বরবাদ.jpg" alt="বরবাদ (২০২৫)">
@@ -115,66 +169,78 @@
     <p><strong>পরিচালক:</strong> সানাউল হক</p>
     <p><strong>বাজেট:</strong> ৫-৬ কোটি টাকা</p>
     <p><strong>আয়:</strong> ১০-১২ কোটি টাকা</p>
-    <a href="https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view" target="_blank" class="download-btn">Download</a>
+    <a href="https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view" class="download-btn" target="_blank">Download</a>
   </div>
 
-  <!-- Avatar: The Way of Water (2022) -->
+  <!-- Avatar 2 -->
   <div class="movie-card">
-    <img src="avatar2.jpg" alt="Avatar: The Way of Water (2022)">
+    <img src="avatar2.jpg" alt="Avatar 2">
     <h3>Avatar: The Way of Water (2022)</h3>
-    <p><strong>অভিনয়ে:</strong> স্যাম ওয়ার্থিংটন, জোয়েল এডগারটন</p>
-    <p><strong>পরিচালক:</strong> জেমস ক্যামেরন</p>
-    <p><strong>বাজেট:</strong> $350 মিলিয়ন</p>
-    <p><strong>আয়:</strong> $2.3 বিলিয়ন</p>
-    <a href="https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view" target="_blank" class="download-btn">Download</a>
+    <p><strong>Cast:</strong> Sam Worthington, Zoe Saldana</p>
+    <p><strong>Director:</strong> James Cameron</p>
+    <p><strong>Budget:</strong> $350M</p>
+    <p><strong>Gross:</strong> $2.3B</p>
+    <a href="https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view" class="download-btn" target="_blank">Download</a>
   </div>
 
-  <!-- Ben 10 Omniverse (Seasons 7–8) -->
+  <!-- Ben 10 Omniverse (S7-8) -->
   <div class="movie-card">
-    <img src="ben10_s7_8.jpg" alt="Ben 10 Omniverse (Seasons 7–8)">
+    <img src="ben10_s7_8.jpg" alt="Ben 10 Omniverse">
     <h3>Ben 10 Omniverse (Seasons 7–8)</h3>
-    <p><strong>অভিনয়ে:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
-    <p><strong>পরিচালক:</strong> ডিউক ফিল্ড</p>
-    <p><strong>বাজেট:</strong> $1.6 মিলিয়ন (প্রতি পর্ব)</p>
-    <p><strong>আয়:</strong> $10+ মিলিয়ন</p>
-    <a href="https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view" target="_blank" class="download-btn">Download</a>
+    <p><strong>Cast:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+    <p><strong>Director:</strong> ডিউক ফিল্ড</p>
+    <p><strong>Per Episode Budget:</strong> $1.6M</p>
+    <a href="https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view" class="download-btn" target="_blank">Download</a>
   </div>
 
-  <!-- Raaj Babu (2014) -->
-  <!-- RoboCop (2014) -->
-<div class="movie-card">
-  <img src="robocop2014.jpg" alt="RoboCop (2014)">
-  <h3>RoboCop (2014)</h3>
-  <p><strong>অভিনয়ে:</strong> জয়কার্সন, গ্যারি অলডম্যান, মাইকেল কেটন</p>
-  <p><strong>পরিচালক:</strong> জোশুয়া মাইকেল স্ট্রিকল্যান্ড</p>
-  <p><strong>বাজেট:</strong> $100 মিলিয়ন</p>
-  <p><strong>আয়:</strong> $242.6 মিলিয়ন</p>
-  <a href="https://drive.google.com/file/d/XXXXXX/view" target="_blank" class="download-btn">Download</a>
-</div>
+  <!-- RoboCop -->
+  <div class="movie-card">
+    <img src="robocop2014.jpg" alt="RoboCop (2014)">
+    <h3>RoboCop (2014)</h3>
+    <p><strong>Cast:</strong> গ্যারি অলডম্যান, মাইকেল কেটন</p>
+    <p><strong>Director:</strong> জোশুয়া মাইকেল স্ট্রিকল্যান্ড</p>
+    <p><strong>Budget:</strong> $100M</p>
+    <p><strong>Gross:</strong> $242.6M</p>
+    <a href="https://drive.google.com/file/d/XXXXXX/view" class="download-btn" target="_blank">Download</a>
+  </div>
 
-  <!-- Aladdin (2019) -->
+  <!-- Aladdin -->
   <div class="movie-card">
     <img src="aladdin.jpg" alt="Aladdin (2019)">
     <h3>Aladdin (2019)</h3>
-    <p><strong>অভিনয়ে:</strong> উইল স্মিথ, মেনা মাসুদ</p>
-    <p><strong>পরিচালক:</strong> গাই রিচি</p>
-    <p><strong>বাজেট:</strong> $183 মিলিয়ন</p>
-    <p><strong>আয়:</strong> $1.05 বিলিয়ন</p>
-    <a href="https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view" target="_blank" class="download-btn">Download</a>
+    <p><strong>Cast:</strong> উইল স্মিথ, মেনা মাসুদ</p>
+    <p><strong>Director:</strong> গাই রিচি</p>
+    <p><strong>Budget:</strong> $183M</p>
+    <p><strong>Gross:</strong> $1.05B</p>
+    <a href="https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view" class="download-btn" target="_blank">Download</a>
   </div>
 
-  <!-- Ben 10 Omniverse (Seasons 4–6) -->
+  <!-- Ben 10 Omniverse (S4-6) -->
   <div class="movie-card">
-    <img src="ben10_s4_6.jpg" alt="Ben 10 Omniverse (Seasons 4–6)">
+    <img src="ben10_s4_6.jpg" alt="Ben 10 Omniverse S4–6">
     <h3>Ben 10 Omniverse (Seasons 4–6)</h3>
-    <p><strong>অভিনয়ে:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
-    <p><strong>পরিচালক:</strong> ডিউক ফিল্ড</p>
-    <p><strong>বাজেট:</strong> $1.6 মিলিয়ন (প্রতি পর্ব)</p>
-    <p><strong>আয়:</strong> $10+ মিলিয়ন</p>
-    <a href="https://drive.google.com/file/d/1WLe0khdlev1282515bDzNe99D7-Av7mT/view" target="_blank" class="download-btn">Download</a>
+    <p><strong>Cast:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+    <p><strong>Director:</strong> ডিউক ফিল্ড</p>
+    <p><strong>Per Episode Budget:</strong> $1.6M</p>
+    <a href="https://drive.google.com/file/d/1WLe0khdlev1282515bDzNe99D7-Av7mT/view" class="download-btn" target="_blank">Download</a>
   </div>
 
 </div>
 
+<!-- Footer -->
+<footer>
+  <p>&copy; <span id="year"></span> Ahameed. All rights reserved.</p>
+  <div class="social-icons">
+    <a href="https://facebook.com/ahameedplayz" target="_blank"><i class="fab fa-facebook"></i></a>
+    <a href="https://instagram.com/ahameed.1" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@ahameedplayz" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://tiktok.com/@ahameedplayz" target="_blank"><i class="fab fa-tiktok"></i></a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
 </body>
-      </html>
+                                                                                                                                    </html>
