@@ -3,23 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ahameed | Digital Space</title>
+  <title>Ahameed | Digital Creator & Content Producer</title>
   <link rel="icon" href="imglogo.png" type="image/png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&family=Roboto&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0f0f1a;
+      --bg-gradient: linear-gradient(135deg, #0f0f1a 0%, #1a1a2e 100%);
       --primary: #6c5ce7;
+      --primary-light: #8577f0;
       --accent: #00cec9;
+      --accent-dark: #00a8a5;
       --text: #ffffff;
+      --text-light: #e2e2e2;
       --card-bg: #1e1e2f;
-      --border-radius: 15px;
-
+      --card-hover: #25253a;
+      --border-radius: 16px;
+      --box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
+      
       --youtube: #FF0000;
       --instagram: #E1306C;
       --facebook: #1877F2;
       --tiktok: #000000;
+      --twitter: #1DA1F2;
+      --linkedin: #0A66C2;
     }
 
     * {
@@ -29,198 +37,701 @@
     }
 
     body {
-      background: var(--bg);
+      background: var(--bg-gradient);
       color: var(--text);
       font-family: 'Roboto', sans-serif;
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Styles */
     header {
       text-align: center;
-      padding: 4rem 1rem 2rem;
+      padding: 5rem 1rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 50% 50%, rgba(108, 92, 231, 0.15) 0%, transparent 70%);
+      z-index: -1;
+    }
+
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .logo-container img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--primary);
+      box-shadow: 0 0 30px rgba(108, 92, 231, 0.5);
+      transition: all 0.3s ease;
+    }
+
+    .logo-container img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 40px rgba(108, 92, 231, 0.7);
     }
 
     h1 {
       font-family: 'Poppins', sans-serif;
-      font-size: 2.5rem;
-      margin-top: 1rem;
+      font-size: 3rem;
       font-weight: 700;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
+      margin-bottom: 0.5rem;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-fill-color: transparent;
     }
 
-    h1 img {
-      width: 60px;
-      height: 60px;
+    .tagline {
+      font-size: 1.2rem;
+      color: var(--text-light);
+      max-width: 700px;
+      margin: 0 auto 2rem;
     }
 
     .cta {
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--primary);
+      color: var(--text);
+      padding: 1rem 2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(108, 92, 231, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn:hover {
+      background: var(--primary-light);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(108, 92, 231, 0.6);
+    }
+
+    .btn-accent {
+      background: var(--accent);
+      box-shadow: 0 5px 15px rgba(0, 206, 201, 0.4);
+    }
+
+    .btn-accent:hover {
+      background: var(--accent-dark);
+      box-shadow: 0 8px 25px rgba(0, 206, 201, 0.6);
+    }
+
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      box-shadow: none;
+    }
+
+    .btn-outline:hover {
+      background: rgba(108, 92, 231, 0.1);
+      color: var(--text);
+    }
+
+    .btn i {
+      margin-right: 8px;
+      font-size: 1.1rem;
+    }
+
+    /* Section Styles */
+    .section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    .section-title {
+      font-family: 'Poppins', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: center;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+      border-radius: 2px;
+    }
+
+    /* About Section */
+    .about-content {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      margin-top: 2rem;
+    }
+
+    .about-text {
+      flex: 1;
+    }
+
+    .about-text p {
+      margin-bottom: 1.5rem;
+      font-size: 1.1rem;
+      color: var(--text-light);
+    }
+
+    .skills {
+      display: flex;
+      flex-wrap: wrap;
       gap: 1rem;
       margin-top: 2rem;
     }
 
-    .cta a {
-      background: var(--primary);
-      color: var(--text);
-      padding: 1rem 2rem;
-      border-radius: 30px;
-      font-size: 1rem;
-      text-decoration: none;
-      font-weight: 600;
-      animation: pulseGlow 2.5s ease-in-out infinite;
-      transition: all 0.3s ease;
+    .skill-tag {
+      background: rgba(108, 92, 231, 0.2);
+      color: var(--primary-light);
+      padding: 0.5rem 1.2rem;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 500;
     }
 
-    .cta a:hover {
-      background: var(--accent);
-      color: var(--primary);
-      transform: scale(1.05);
-      animation: none;
-    }
-
-    .section {
-      max-width: 900px;
-      margin: 2rem auto;
-      padding: 2rem;
-      background: var(--card-bg);
-      border-radius: var(--border-radius);
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
-      animation: fadeIn 1s ease forwards;
-    }
-
-    h2 {
-      font-family: 'Poppins', sans-serif;
-      font-size: 2rem;
-      margin-bottom: 1rem;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 10px var(--accent); }
-      50% { box-shadow: 0 0 20px var(--accent); }
-    }
-
+    /* Social Links Section */
     .socials {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
     }
 
     .social-card {
       background: var(--card-bg);
       border-radius: var(--border-radius);
-      padding: 1.5rem;
+      padding: 2rem;
       text-align: center;
-      width: 220px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      transition: transform 0.3s ease;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: var(--box-shadow);
     }
 
     .social-card:hover {
-      transform: scale(1.05);
+      transform: translateY(-10px);
+      background: var(--card-hover);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
     }
 
-    .social-card img {
-      width: 50px;
-      height: 50px;
+    .social-icon {
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-bottom: 1.5rem;
+      font-size: 1.8rem;
+      color: white;
+    }
+
+    .youtube .social-icon { background: var(--youtube); }
+    .instagram .social-icon { background: var(--instagram); }
+    .facebook .social-icon { background: var(--facebook); }
+    .tiktok .social-icon { background: var(--tiktok); }
+    .twitter .social-icon { background: var(--twitter); }
+    .linkedin .social-icon { background: var(--linkedin); }
+
+    .social-card h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.3rem;
       margin-bottom: 0.5rem;
     }
 
-    .social-card a {
-      display: inline-block;
-      margin-top: 0.5rem;
-      padding: 0.5rem 1.2rem;
-      border-radius: 20px;
-      text-decoration: none;
-      font-weight: 600;
-      animation: pulseGlow 2.5s ease-in-out infinite;
-      color: var(--text);
-      transition: all 0.3s ease;
+    .social-card p {
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
     }
 
-    .youtube a { background: var(--youtube); }
-    .youtube a:hover { background: #fff; color: var(--youtube); }
+    /* Projects/Content Section */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
 
-    .instagram a { background: var(--instagram); }
-    .instagram a:hover { background: #fff; color: var(--instagram); }
+    .project-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: var(--box-shadow);
+    }
 
-    .facebook a { background: var(--facebook); }
-    .facebook a:hover { background: #fff; color: var(--facebook); }
+    .project-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+    }
 
-    .tiktok a { background: var(--tiktok); }
-    .tiktok a:hover { background: #fff; color: var(--tiktok); }
+    .project-image {
+      height: 200px;
+      overflow: hidden;
+    }
 
+    .project-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .project-card:hover .project-image img {
+      transform: scale(1.05);
+    }
+
+    .project-info {
+      padding: 1.5rem;
+    }
+
+    .project-info h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-info p {
+      color: var(--text-light);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    /* Contact Section */
+    .contact-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 3rem;
+      margin-top: 3rem;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+
+    .contact-icon {
+      background: var(--primary);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+
+    .contact-text h3 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .contact-text p, .contact-text a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-text a:hover {
+      color: var(--accent);
+    }
+
+    /* Footer */
     footer {
+      background: rgba(0, 0, 0, 0.2);
+      padding: 3rem 0;
       text-align: center;
-      padding: 2rem 0;
-      color: var(--text);
+      margin-top: 5rem;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .footer-logo {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--primary);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-links a {
+      color: var(--text-light);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .social-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .social-links a {
+      color: var(--text-light);
+      font-size: 1.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
+    }
+
+    .copyright {
+      color: var(--text-light);
       font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 2.2rem;
+      }
+      
+      .tagline {
+        font-size: 1rem;
+      }
+      
+      .about-content {
+        flex-direction: column;
+      }
+      
+      .section {
+        padding: 3rem 0;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .btn {
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+      }
+      
+      .socials {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
 
   <header>
-    <h1>
-      <img src="imglogo.png" alt="Logo"> Ahameed
-    </h1>
-    <div class="cta">
-      <a href="indexx.html">Explore Ahameed Mods</a>
-      <a href="All.html">Movies & Web Series</a>
+    <div class="container">
+      <div class="logo-container">
+        <img src="imglogo.png" alt="Ahameed Logo">
+      </div>
+      <h1>Ahameed Playz</h1>
+      <p class="tagline">Digital Creator | Content Producer | Tech Enthusiast</p>
+      <div class="cta">
+        <a href="indexx.html" class="btn btn-accent"><i class="fas fa-box-open"></i> Explore Ahameed Mods</a>
+        <a href="All.html" class="btn btn-outline"><i class="fas fa-film"></i> Movies & Web Series</a>
+      </div>
     </div>
   </header>
 
   <section class="section">
-    <h2>Social Links</h2>
-    <div class="socials">
-      <div class="social-card instagram">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" />
-        <div>Instagram</div>
-        <a href="https://instagram.com/ahameed.1" target="_blank">Follow</a>
-      </div>
-      <div class="social-card facebook">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook" />
-        <div>Facebook</div>
-        <a href="https://facebook.com/ahameedplayz" target="_blank">Like</a>
-      </div>
-      <div class="social-card tiktok">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/TikTok_logo.svg" alt="TikTok" />
-        <div>TikTok</div>
-        <a href="https://tiktok.com/@ahameedplayz" target="_blank">Watch</a>
-      </div>
-      <div class="social-card youtube">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="YouTube" />
-        <div>YouTube</div>
-        <a href="https://youtube.com/@ahameedplayz" target="_blank">Subscribe</a>
+    <div class="container">
+      <h2 class="section-title">About Me</h2>
+      <div class="about-content">
+        <div class="about-text">
+          <p>Hello! I'm Ahameed, a passionate digital creator and content producer with a love for technology, entertainment, and creative expression. I specialize in creating engaging digital content that resonates with audiences across multiple platforms.</p>
+          <p>With years of experience in digital content creation, I've developed a unique approach to storytelling that combines technical expertise with creative vision. My work spans across mod development, video content, and digital media production.</p>
+          <p>When I'm not creating content, you can find me exploring new technologies, experimenting with creative tools, or staying up-to-date with the latest trends in digital media.</p>
+          
+          <div class="skills">
+            <span class="skill-tag">Content Creation</span>
+            <span class="skill-tag">Video Production</span>
+            <span class="skill-tag">Mod Development</span>
+            <span class="skill-tag">Digital Marketing</span>
+            <span class="skill-tag">Social Media</span>
+            <span class="skill-tag">Web Design</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
-  
-  <section class="section">
-    <h2>About Me</h2>
-    <p>
-      Hi, I'm Ahameed — passionate about the digital world, creativity, and technology. I enjoy crafting ideas, telling stories, and sharing thoughts across platforms.
-    </p>
+
+  <section class="section" style="background: rgba(0,0,0,0.1);">
+    <div class="container">
+      <h2 class="section-title">My Social Spaces</h2>
+      <div class="socials">
+        <div class="social-card youtube">
+          <div class="social-icon">
+            <i class="fab fa-youtube"></i>
+          </div>
+          <h3>YouTube</h3>
+          <p>Subscribe to my channel for the latest videos, tutorials, and content updates.</p>
+          <a href="https://youtube.com/@ahameedplayz" target="_blank" class="btn">Subscribe Now</a>
+        </div>
+        
+        <div class="social-card instagram">
+          <div class="social-icon">
+            <i class="fab fa-instagram"></i>
+          </div>
+          <h3>Instagram</h3>
+          <p>Follow me for behind-the-scenes content, stories, and daily updates.</p>
+          <a href="https://instagram.com/ahameed.1" target="_blank" class="btn">Follow Me</a>
+        </div>
+        
+        <div class="social-card facebook">
+          <div class="social-icon">
+            <i class="fab fa-facebook-f"></i>
+          </div>
+          <h3>Facebook</h3>
+          <p>Connect with me on Facebook for community engagement and updates.</p>
+          <a href="https://facebook.com/ahameedplayz" target="_blank" class="btn">Like Page</a>
+        </div>
+        
+        <div class="social-card tiktok">
+          <div class="social-icon">
+            <i class="fab fa-tiktok"></i>
+          </div>
+          <h3>TikTok</h3>
+          <p>Watch my short-form videos for quick entertainment and creative content.</p>
+          <a href="https://tiktok.com/@ahameedplayz" target="_blank" class="btn">Watch Videos</a>
+        </div>
+      </div>
+    </div>
   </section>
-    
+
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">Featured Projects</h2>
+      <div class="projects-grid">
+        <div class="project-card">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/600x400?text=Ahameed+Mods" alt="Ahameed Mods">
+          </div>
+          <div class="project-info">
+            <h3>Ahameed Mods Collection</h3>
+            <p>A curated collection of game modifications created to enhance user experience with new features and content.</p>
+            <a href="indexx.html" class="btn">Explore Mods</a>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/600x400?text=Movie+Library" alt="Movie Library">
+          </div>
+          <div class="project-info">
+            <h3>Movie & Series Library</h3>
+            <p>Comprehensive collection of movies and web series recommendations and reviews.</p>
+            <a href="All.html" class="btn">Browse Collection</a>
+          </div>
+        </div>
+        
+        <div class="project-card">
+          <div class="project-image">
+            <img src="https://via.placeholder.com/600x400?text=Content+Creation" alt="Content Creation">
+          </div>
+          <div class="project-info">
+            <h3>Content Creation</h3>
+            <p>My portfolio of digital content including videos, graphics, and multimedia projects.</p>
+            <a href="#" class="btn">View Portfolio</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background: rgba(0,0,0,0.1);">
+    <div class="container">
+      <h2 class="section-title">Get In Touch</h2>
+      <div class="contact-container">
+        <div class="contact-info">
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-envelope"></i>
+            </div>
+            <div class="contact-text">
+              <h3>Email</h3>
+              <a href="mailto:contact@ahameed.com">contact@ahameed.com</a>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-phone-alt"></i>
+            </div>
+            <div class="contact-text">
+              <h3>Phone</h3>
+              <p>+1 (123) 456-7890</p>
+            </div>
+          </div>
+          
+          <div class="contact-item">
+            <div class="contact-icon">
+              <i class="fas fa-map-marker-alt"></i>
+            </div>
+            <div class="contact-text">
+              <h3>Location</h3>
+              <p>Digital Space, Internet</p>
+            </div>
+          </div>
+        </div>
+        
+        <form class="contact-form">
+          <div class="form-group">
+            <input type="text" placeholder="Your Name" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="Your Email" required>
+          </div>
+          <div class="form-group">
+            <input type="text" placeholder="Subject">
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Your Message" rows="5" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-accent" style="width: 100%;">Send Message</button>
+        </form>
+      </div>
+    </div>
+  </section>
 
   <footer>
-    &copy; <span id="year"></span> Ahameed. All rights reserved.
+    <div class="container">
+      <div class="footer-content">
+        <img src="imglogo.png" alt="Ahameed Logo" class="footer-logo">
+        <h3>Ahameed Playz</h3>
+        
+        <div class="footer-links">
+          <a href="#">Home</a>
+          <a href="indexx.html">Mods</a>
+          <a href="All.html">Movies</a>
+          <a href="#">About</a>
+          <a href="#">Contact</a>
+          <a href="#">Privacy Policy</a>
+        </div>
+        
+        <div class="social-links">
+          <a href="https://youtube.com/@ahameedplayz" target="_blank"><i class="fab fa-youtube"></i></a>
+          <a href="https://instagram.com/ahameed.1" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://facebook.com/ahameedplayz" target="_blank"><i class="fab fa-facebook-f"></i></a>
+          <a href="https://tiktok.com/@ahameedplayz" target="_blank"><i class="fab fa-tiktok"></i></a>
+        </div>
+        
+        <p class="copyright">&copy; <span id="year"></span> Ahameed Playz. All rights reserved.</p>
+      </div>
+    </div>
   </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-
-</body>
-  </html>
+    
+    // Smooth scrolling for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+    
+    // Animation on scroll
+    const animateOnScroll = () => {
+      const elements = document.querySelectorAll('.section, .project-card, .social-card');
+      
+      elements.forEach(element => {
+        const elementPosition = element.getBoundingClientRect().top;
+        const screenPosition = window.innerHeight / 1.2;
+        
+        if (elementPosition < screenPosition) {
+          element.style.opacity = '1';
+          element.style.transform = 'translateY(0)';
+        }
+      });
+    };
+    
+    // Initializ
