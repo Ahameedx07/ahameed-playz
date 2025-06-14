@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AhameedFlix - Premium Movie Downloads</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --accent: #00cec9;
+      --dark-bg: #0f0f1a;
+      --card-bg: #1e1e2f;
+      --text-color: #fff;
+      --muted: #aaa;
+      --gradient: linear-gradient(135deg, var(--primary), var(--accent));
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Header Styles */
+    .top-bar {
+      background: rgba(15, 15, 26, 0.9);
+      padding: 10px 2rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .top-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .top-bar a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.3s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .top-bar a:hover {
+      color: var(--accent);
+    }
+
+    header {
+      background: rgba(15, 15, 26, 0.95);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .logo-title img {
+      height: 50px;
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    }
+
+    .logo-title:hover img {
+      transform: rotate(360deg) scale(1.1);
+    }
+
+    .logo-title h1 {
+      font-size: 1.8rem;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+
+    nav {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+      font-size: 1.05rem;
+      transition: all 0.3s;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--gradient);
+      transition: width 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      height: 80vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      z-index: 1;
+    }
+
+    .hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    .hero h1 {
+      font-size: 4rem;
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .hero p {
+      font-size: 1.3rem;
+      color: var(--muted);
+      margin-bottom: 2.5rem;
+      max-width: 700px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 35px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1.1rem;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn i {
+      margin-right: 10px;
+    }
+
+    .btn-primary {
+      background: var(--gradient);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Movie Cards Section */
+    .section-title {
+      text-align: center;
+      margin: 4rem 0 2rem;
+      font-size: 2.8rem;
+      position: relative;
+      display: inline-block;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gradient);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80px;
+      height: 5px;
+      background: var(--gradient);
+      border-radius: 3px;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2.5rem;
+      padding: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .movie-card {
+      background-color: var(--card-bg);
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      position: relative;
+      opacity: 0;
+      transform: translateY(50px);
+    }
+
+    .movie-card.animate {
+      animation: cardPopup 0.8s forwards;
+    }
+
+    @keyframes cardPopup {
+      0% {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .movie-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+    }
+
+    .movie-card img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+
+    .movie-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .movie-info {
+      padding: 1.8rem;
+      position: relative;
+      z-index: 1;
+      background: linear-gradient(to top, var(--card-bg) 70%, transparent);
+    }
+
+    .movie-card h3 {
+      font-size: 1.5rem;
+      margin: 0.8rem 0;
+      transition: color 0.3s;
+    }
+
+    .movie-card:hover h3 {
+      color: var(--accent);
+    }
+
+    .movie-card p {
+      margin: 0.8rem 0;
+      font-size: 1rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .download-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1.5rem 0 0;
+      padding: 12px 30px;
+      background: var(--gradient);
+      color: white;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .download-btn i {
+      margin-right: 10px;
+    }
+
+    .download-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+    }
+
+    /* Special Tandob Card */
+    .tandob-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tandob-card::before {
+      content: "HOT";
+      position: absolute;
+      top: 20px;
+      right: -40px;
+      background: #ff4757;
+      color: white;
+      padding: 8px 40px;
+      transform: rotate(45deg);
+      z-index: 2;
+      font-weight: bold;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+      animation: hotShake 0.8s ease infinite alternate;
+    }
+
+    @keyframes hotShake {
+      0% {
+        transform: rotate(45deg) translateX(0) translateY(0);
+      }
+      100% {
+        transform: rotate(45deg) translateX(10px) translateY(-5px);
+      }
+    }
+
+    /* Popup Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      z-index: 2000;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border-radius: 15px;
+      width: 90%;
+      max-width: 800px;
+      position: relative;
+      animation: slideUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+      overflow: hidden;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      background: var(--gradient);
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .modal-header h3 {
+      font-size: 1.5rem;
+    }
+
+    .close-modal {
+      font-size: 1.8rem;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .close-modal:hover {
+      transform: rotate(90deg);
+    }
+
+    .modal-body {
+      padding: 2rem;
+    }
+
+    .download-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .download-option {
+      background: rgba(255,255,255,0.05);
+      padding: 1.5rem;
+      border-radius: 10px;
+      transition: all 0.3s;
+    }
+
+    .download-option:hover {
+      background: rgba(255,255,255,0.1);
+      transform: translateX(5px);
+    }
+
+    .download-option h4 {
+      margin-bottom: 0.5rem;
+      color: var(--accent);
+    }
+
+    .download-option p {
+      color: var(--muted);
+      margin-bottom: 1rem;
+      font-size: 0.9rem;
+    }
+
+    .option-btn {
+      display: inline-block;
+      padding: 10px 20px;
+      background: var(--gradient);
+      color: white;
+      border-radius: 5px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s;
+    }
+
+    .option-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Footer */
+    footer {
+      background: linear-gradient(to right, #0a0a12, #141421);
+      color: var(--muted);
+      text-align: center;
+      padding: 4rem 1rem 2rem;
+      margin-top: 5rem;
+      position: relative;
+    }
+
+    footer::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: var(--gradient);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: color 0.3s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    .social-icons {
+      margin: 2rem 0;
+    }
+
+    .social-icons a {
+      color: var(--accent);
+      font-size: 2rem;
+      margin: 0 1.5rem;
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: inline-block;
+    }
+
+    .social-icons a:hover {
+      color: var(--primary);
+      transform: translateY(-10px) scale(1.2);
+    }
+
+    .copyright {
+      margin-top: 2rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .hero h1 {
+        font-size: 3.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.2rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .top-bar {
+        flex-direction: column;
+        gap: 8px;
+        padding: 8px 1rem;
+        text-align: center;
+      }
+      
+      .top-links {
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      
+      header {
+        flex-direction: column;
+        padding: 1rem;
+      }
+      
+      .logo-title {
+        margin-bottom: 1.5rem;
+      }
+      
+      nav {
+        width: 100%;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .hero {
+        height: auto;
+        min-height: 500px;
+        padding: 6rem 1rem;
+        text-align: center;
+      }
+      
+      .hero-content {
+        padding: 1rem;
+      }
+      
+      .hero h1 {
+        font-size: 3rem;
+      }
+      
+      .hero p {
+        margin-left: auto;
+        margin-right: auto;
+      }
+      
+      .hero-buttons {
+        justify-content: center;
+      }
+      
+      .section-title {
+        font-size: 2.5rem;
+      }
+      
+      .container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+      
+      .movie-card img {
+        height: 350px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      
+      .hero p {
+        font-size: 1.1rem;
+      }
+      
+      .hero-buttons {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .btn {
+        width: 100%;
+      }
+      
+      .section-title {
+        font-size: 2.2rem;
+      }
+      
+      .container {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      }
+      
+      .movie-card img {
+        height: 320px;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+      
+      .hero p {
+        font-size: 1rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .container {
+        grid-template-columns: 1fr;
+      }
+      
+      .footer-links {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      
+      .social-icons a {
+        font-size: 1.8rem;
+        margin: 0 1rem;
+      }
+      
+      .modal-body {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="top-bar">
+  <div class="top-links">
+    <a href="tel:+8801XXXXXXXXX"><i class="fas fa-phone-alt"></i> +880 1XXX-XXXXXX</a>
+    <a href="mailto:contact@ahameedflix.com"><i class="fas fa-envelope"></i> contact@ahameedflix.com</a>
+    <a href="#"><i class="fas fa-map-marker-alt"></i> Dhaka, Bangladesh</a>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="logo-title">
+    <img src="imglogo.png" alt="AhameedFlix Logo" />
+    <h1>AhameedFlix</h1>
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Movies</a>
+    <a href="#">TV Shows</a>
+    <a href="#">New Releases</a>
+    <a href="#">About</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<!-- Hero Section -->
+<section class="hero">
+  <video autoplay muted loop class="hero-video">
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-going-down-a-curved-highway-through-a-mountain-range-41576-large.mp4" type="video/mp4">
+  </video>
+  <div class="hero-content">
+    <h1>Experience Unlimited Entertainment</h1>
+    <p>Download your favorite movies and TV shows in HD quality. New content added every week!</p>
+    <div class="hero-buttons">
+      <a href="#" class="btn btn-primary" id="watch-trailer"><i class="fas fa-play"></i> Watch Trailer</a>
+      <a href="#movies" class="btn btn-secondary"><i class="fas fa-download"></i> Download Now</a>
+    </div>
+  </div>
+</section>
+
+<!-- Movies Section -->
+<h2 id="movies" class="section-title">Latest Releases</h2>
+<div class="container">
+
+  <!-- তাণ্ডব (২০১৫) -->
+  <div class="movie-card tandob-card">
+    <img src="https://upload.wikimedia.org/wikipedia/en/2/2c/Taandav_poster.jpg" alt="তাণ্ডব (২০১৫)">
+    <div class="movie-info">
+      <h3>তাণ্ডব (২০১৫)</h3>
+      <p><strong>অভিনয়ে:</strong> শাকিব খান, নুসরাত ইমরোজ তিশা, মিশা সওদাগর</p>
+      <p><strong>পরিচালক:</strong> সানাউল হক</p>
+      <p><strong>ধরণ:</strong> অ্যাকশন, থ্রিলার</p>
+      <p><strong>আয়:</strong> ৮-১০ কোটি টাকা</p>
+      <button class="download-btn download-trigger" data-movie="তাণ্ডব (২০১৫)"><i class="fas fa-download"></i> Download Options</button>
+    </div>
+  </div>
+
+  <!-- বরবাদ (২০২৫) -->
+  <div class="movie-card">
+    <img src="বরবাদ.jpg" alt="বরবাদ (২০২৫)">
+    <div class="movie-info">
+      <h3>বরবাদ (২০২৫)</h3>
+      <p><strong>অভিনয়ে:</strong> শাকিব খান, যিশু সেনগুপ্ত, ইধিকা পাল</p>
+      <p><strong>পরিচালক:</strong> সানাউল হক</p>
+      <p><strong>বাজেট:</strong> ৫-৬ কোটি টাকা</p>
+      <p><strong>আয়:</strong> ১০-১২ কোটি টাকা</p>
+      <button class="download-btn download-trigger" data-movie="বরবাদ (২০২৫)"><i class="fas fa-download"></i> Download Options</button>
+    </div>
+  </div>
+
+  <!-- Avatar 2 -->
+  <div class="movie-card">
+    <img src="avatar2.jpg" alt="Avatar 2">
+    <div class="movie-info">
+      <h3>Avatar: The Way of Water (2022)</h3>
+      <p><strong>Cast:</strong> Sam Worthington, Zoe Saldana</p>
+      <p><strong>Director:</strong> James Cameron</p>
+      <p><strong>Budget:</strong> $350M</p>
+      <p><strong>Gross:</strong> $2.3B</p>
+      <button class="download-btn download-trigger" data-movie="Avatar: The Way of Water"><i class="fas fa-download"></i> Download Options</button>
+    </div>
+  </div>
+
+  <!-- Ben 10 Omniverse (S7-8) -->
+  <div class="movie-card">
+    <img src="ben10_s7_8.jpg" alt="Ben 10 Omniverse">
+    <div class="movie-info">
+      <h3>Ben 10 Omniverse (Seasons 7–8)</h3>
+      <p><strong>Cast:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+      <p><strong>Director:</strong> ডিউক ফিল্ড</p>
+      <p><strong>Per Episode Budget:</strong> $1.6M</p>
+      <button class="download-btn download-trigger" data-movie="Ben 10 Omniverse"><i class="fas fa-download"></i> Download Options</button>
+    </div>
+  </div>
+
+  <!-- RoboCop -->
+  <div class="movie-card">
+    <img src="robocop2014.jpg" alt="RoboCop (2014)">
+    <div class="movie-info">
+      <h3>RoboCop (2014)</h3>
+      <p><strong>Cast:</strong> গ্যারি অলডম্যান, মাইকেল কেটন</p>
+      <p><strong>Director:</strong> জোশুয়া মাইকেল স্ট্রিকল্যান্ড</p>
+      <p><strong>Budget:</strong> $100M</p>
+      <p><strong>Gross:</strong> $242.6M</p>
+      <button class="download-btn download-trigger" data-movie="RoboCop (2014)"><i class="fas fa-download"></i> Download Options</button>
+    </div>
+  </div>
+
+  <!-- Aladdin -->
+  <div class="movie-card">
+    <img src="aladdin.jpg" alt="Aladdin (2019)">
+    <div class="movie-info">
+      <h3>Aladdin (2019)</h3>
+      <p><strong>Cast:</strong> উইল স্মিথ, মেনা মাসুদ</p>
+      <p><strong>Director:</strong> গাই রিচি</p>
+      <p><strong>Budget:</strong> $183M</p>
+      <p><strong>Gross:</strong> $1.05B</p>
+      <button class="download-btn download-trigger" data-movie="Aladdin (2019)"><i class="fas fa-download"></i> Download Options</button>
+    </div>
+  </div>
+
+  <!-- Ben 10 Omniverse (S4-6) -->
+  <div class="movie-card">
+    <img src="ben10_s4_6.jpg" alt="Ben 10 Omniverse S4–6">
+    <div class="movie-info">
+      <h3>Ben 10 Omniverse (Seasons 4–6)</h3>
+      <p><strong>Cast:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+      <p><strong>Director:</strong> ডিউক ফিল্ড</p>
+      <p><strong>Per Episode Budget:</strong> $1.6M</p>
+      <button class="download-btn download-trigger" data-movie="Ben 10 Omniverse S4-6"><i class="fas fa-download"></i> Download Options</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- Download Options Modal -->
+<div class="modal" id="download-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 id="modal-movie-title">Download Options</h3>
+      <span class="close-modal">&times;</span>
+    </div>
+    <div class="modal-body">
+      <div class="download-options">
+        <div class="download-option">
+          <h4>HD Quality (1080p)</h4>
+          <p>High definition version with excellent quality</p>
+          <a href="#" class="option-btn" id="hd-download"><i class="fas fa-download"></i> Download HD</a>
+        </div>
+        <div class="download-option">
+          <h4>Full HD Quality (720p)</h4>
+          <p>Good quality with smaller file size</p>
+          <a href="#" class="option-btn" id="fullhd-download"><i class="fas fa-download"></i> Download Full HD</a>
+        </div>
+        <div class="download-option">
+          <h4>Standard Quality (480p)</h4>
+          <p>Smaller file size for slower connections</p>
+          <a href="#" class="option-btn" id="sd-download"><i class="fas fa-download"></i> Download SD</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-links">
+    <a href="#">Home</a>
+    <a href="#">Movies</a>
+    <a href="#">TV Shows</a>
+    <a href="#">New Releases</a>
+    <a href="#">About Us</a>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="social-icons">
+    <a href="https://facebook.com/ahameedplayz" target="_blank"><i class="fab fa-facebook"></i></a>
+    <a href="https://instagram.com/ahameed.1" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@ahameedplayz" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://tiktok.com/@ahameedplayz" target="_blank"><i class="fab fa-tiktok"></i></a>
+  </div>
+  <p class="copyright">&copy; <span id="year"></span> AhameedFlix. All Rights Reserved.</p>
+</footer>
+
+<script>
+  // Set current year
+  document.getElementById("year").textContent = new Date().getFullYear();
+
+  // Animate movie cards when they come into view
+  const movieCards = document.querySelectorAll('.movie-card');
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('animate');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  movieCards.forEach(card => {
+    observer.observe(card);
+  });
+
+  // Download options modal functionality
+  const downloadModal = document.getElementById('download-modal');
+  const downloadTriggers = document.querySelectorAll('.download-trigger');
+  const closeModal = document.querySelector('.close-modal');
+  const modalTitle = document.getElementById('modal-movie-title');
+  const hdDownload = document.getElementById('hd-download');
+  const fullHdDownload = document.getElementById('fullhd-download');
+  const sdDownload = document.getElementById('sd-download');
+
+  // Movie download links (replace with your actual links)
+  const movieLinks = {
+    "তাণ্ডব (২০১৫)": {
+      hd: "https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view",
+      fullhd: "https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view",
+      sd: "https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view"
+    },
+    "বরবাদ (২০২৫)": {
+      hd: "https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view",
+      fullhd: "https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view",
+      sd: "https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view"
+    },
+    "Avatar: The Way of Water": {
+      hd: "https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view",
+      fullhd: "https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view",
+      sd: "https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view"
+    },
+    "Ben 10 Omniverse": {
+      hd: "https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view",
+      fullhd: "https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view",
+      sd: "https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view"
+    },
+    "RoboCop (2014)": {
+      hd: "https://drive.google.com/file/d/XXXXXX/view",
+      fullhd: "https://drive.google.com/file/d/XXXXXX/view",
+      sd: "https://drive.google.com/file/d/XXXXXX/view"
+    },
+    "Aladdin (2019)": {
+      hd: "https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view",
+      fullhd: "https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view",
+      sd: "https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view"
+    },
+    "Ben 10 Omniverse S4-6": {
+      hd: "https://drive.google.com/file/d/1WLe0khdlev1282515bDzNe99D7-Av7mT/view",
+      fullhd: "https://drive.google.com/file/d/1WLe0khdlev1282515bDzNe99D7-Av7mT/view",
+      sd: "https://drive.google.com/file/d/1WLe0khdlev1282515bDzNe99D7-Av7mT/view"
+    }
+  };
+
+  downloadTriggers.forEach(trigger => {
+    trigger.addEventListener('click', () => {
+      const movieTitle = trigger.getAttribute('data-movie');
+      modalTitle.textContent = `Download ${movieTitle}`;
+      
+      // Set download links for this movie
+      hdDownload.href = movieLinks[movieTitle].hd;
+      fullHdDownload.href = movieLinks[movieTitle].fullhd;
+      sdDownload.href = movieLinks[movieTitle].sd;
+      
+      // Show modal
+      downloadModal.style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+  closeModal.addEventListener('click', () => {
+    downloadModal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === downloadModal) {
+      downloadModal.style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  });
+</script>
+
+</body>
+</html>
