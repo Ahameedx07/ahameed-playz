@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ahameed | Movies & Downloads</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary: #6c5ce7;
+      --accent: #00cec9;
+      --dark-bg: #0f0f1a;
+      --card-bg: #1e1e2f;
+      --text-color: #fff;
+      --muted: #ccc;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--dark-bg);
+      color: var(--text-color);
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .logo-title {
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-title img {
+      height: 50px;
+      transition: transform 0.3s ease;
+    }
+
+    .logo-title:hover img {
+      transform: rotate(15deg);
+    }
+
+    .logo-title h1 {
+      margin-left: 10px;
+      font-size: 1.6rem;
+      color: #fff;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 12px;
+      font-weight: 500;
+      position: relative;
+      padding: 5px 0;
+    }
+
+    nav a:hover {
+      color: #000;
+    }
+
+    nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: #000;
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+
+    .movie-card {
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      animation: fadeIn 0.5s ease forwards;
+      opacity: 0;
+    }
+
+    /* Animation delays for each card */
+    .movie-card:nth-child(1) { animation-delay: 0.1s; }
+    .movie-card:nth-child(2) { animation-delay: 0.2s; }
+    .movie-card:nth-child(3) { animation-delay: 0.3s; }
+    .movie-card:nth-child(4) { animation-delay: 0.4s; }
+    .movie-card:nth-child(5) { animation-delay: 0.5s; }
+    .movie-card:nth-child(6) { animation-delay: 0.6s; }
+    .movie-card:nth-child(7) { animation-delay: 0.7s; }
+
+    .movie-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.4);
+    }
+
+    .movie-card img {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .movie-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .movie-info {
+      padding: 1rem;
+    }
+
+    .movie-card h3 {
+      font-size: 1.3rem;
+      margin: 0.8rem 0;
+      transition: color 0.3s;
+    }
+
+    .movie-card:hover h3 {
+      color: var(--accent);
+    }
+
+    .movie-card p {
+      margin: 0.5rem 0;
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .download-btn {
+      display: inline-block;
+      margin: 1rem 0;
+      padding: 10px 20px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      width: calc(100% - 1.6rem);
+      text-align: center;
+    }
+
+    .download-btn:hover {
+      background-color: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    /* Special Tandob Card */
+    .tandob-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .tandob-card::before {
+      content: "NEW";
+      position: absolute;
+      top: 10px;
+      right: -30px;
+      background: #ff4757;
+      color: white;
+      padding: 5px 30px;
+      transform: rotate(45deg);
+      z-index: 1;
+      font-weight: bold;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      font-size: 0.9rem;
+    }
+
+    .tandob-card:hover::before {
+      animation: hotShake 0.5s ease infinite alternate;
+    }
+
+    footer {
+      background: #141421;
+      color: var(--muted);
+      text-align: center;
+      padding: 2rem 1rem;
+      margin-top: 2rem;
+      border-top: 1px solid #333;
+    }
+
+    .social-icons {
+      margin: 1.5rem 0;
+    }
+
+    .social-icons a {
+      color: var(--accent);
+      font-size: 1.6rem;
+      margin: 0 0.8rem;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .social-icons a:hover {
+      color: var(--primary);
+      transform: translateY(-5px) scale(1.1);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes hotShake {
+      from { transform: rotate(45deg) translateX(0); }
+      to { transform: rotate(45deg) translateX(5px); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      }
+      
+      .movie-card img {
+        height: 300px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      nav {
+        margin-top: 1rem;
+      }
+      
+      .logo-title {
+        justify-content: center;
+      }
+      
+      .container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="logo-title">
+    <img src="imglogo.png" alt="AhameedFlix Logo" />
+    <h1>AhameedFlix</h1>
+  </div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">Movies</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<!-- Movie Cards Section -->
+<div class="container">
+
+  <!-- তাণ্ডব (২০১৫) - New Card Added -->
+  <div class="movie-card tandob-card">
+    <img src="https://upload.wikimedia.org/wikipedia/en/2/2c/Taandav_poster.jpg" alt="তাণ্ডব (২০১৫)">
+    <div class="movie-info">
+      <h3>তাণ্ডব (২০১৫)</h3>
+      <p><strong>অভিনয়ে:</strong> শাকিব খান, নুসরাত ইমরোজ তিশা, মিশা সওদাগর</p>
+      <p><strong>পরিচালক:</strong> সানাউল হক</p>
+      <p><strong>ধরণ:</strong> অ্যাকশন, থ্রিলার</p>
+      <p><strong>আয়:</strong> ৮-১০ কোটি টাকা</p>
+      <a href="https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view" class="download-btn" target="_blank">Download</a>
+    </div>
+  </div>
+
+  <!-- বরবাদ (২০২৫) -->
+  <div class="movie-card">
+    <img src="বরবাদ.jpg" alt="বরবাদ (২০২৫)">
+    <div class="movie-info">
+      <h3>বরবাদ (২০২৫)</h3>
+      <p><strong>অভিনয়ে:</strong> শাকিব খান, যিশু সেনগুপ্ত, ইধিকা পাল</p>
+      <p><strong>পরিচালক:</strong> সানাউল হক</p>
+      <p><strong>বাজেট:</strong> ৫-৬ কোটি টাকা</p>
+      <p><strong>আয়:</strong> ১০-১২ কোটি টাকা</p>
+      <a href="https://drive.google.com/file/d/1DAmgYKTYk4yVHDe9I6r8pZ8b11Ig6HYu/view" class="download-btn" target="_blank">Download</a>
+    </div>
+  </div>
+
+  <!-- Avatar 2 -->
+  <div class="movie-card">
+    <img src="avatar2.jpg" alt="Avatar 2">
+    <div class="movie-info">
+      <h3>Avatar: The Way of Water (2022)</h3>
+      <p><strong>Cast:</strong> Sam Worthington, Zoe Saldana</p>
+      <p><strong>Director:</strong> James Cameron</p>
+      <p><strong>Budget:</strong> $350M</p>
+      <p><strong>Gross:</strong> $2.3B</p>
+      <a href="https://drive.google.com/file/d/1Fq2cGPbfxmbZRNfhI5awdHBg9tTEha98/view" class="download-btn" target="_blank">Download</a>
+    </div>
+  </div>
+
+  <!-- Ben 10 Omniverse (S7-8) -->
+  <div class="movie-card">
+    <img src="ben10_s7_8.jpg" alt="Ben 10 Omniverse">
+    <div class="movie-info">
+      <h3>Ben 10 Omniverse (Seasons 7–8)</h3>
+      <p><strong>Cast:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+      <p><strong>Director:</strong> ডিউক ফিল্ড</p>
+      <p><strong>Per Episode Budget:</strong> $1.6M</p>
+      <a href="https://drive.google.com/file/d/1mGSPM8CputwquM58JtRLP9Dvb8Yhts4U/view" class="download-btn" target="_blank">Download</a>
+    </div>
+  </div>
+
+  <!-- RoboCop -->
+  <div class="movie-card">
+    <img src="robocop2014.jpg" alt="RoboCop (2014)">
+    <div class="movie-info">
+      <h3>RoboCop (2014)</h3>
+      <p><strong>Cast:</strong> গ্যারি অলডম্যান, মাইকেল কেটন</p>
+      <p><strong>Director:</strong> জোশুয়া মাইকেল স্ট্রিকল্যান্ড</p>
+      <p><strong>Budget:</strong> $100M</p>
+      <p><strong>Gross:</strong> $242.6M</p>
+      <a href="https://drive.google.com/file/d/XXXXXX/view" class="download-btn" target="_blank">Download</a>
+    </div>
+  </div>
+
+  <!-- Aladdin -->
+  <div class="movie-card">
+    <img src="aladdin.jpg" alt="Aladdin (2019)">
+    <div class="movie-info">
+      <h3>Aladdin (2019)</h3>
+      <p><strong>Cast:</strong> উইল স্মিথ, মেনা মাসুদ</p>
+      <p><strong>Director:</strong> গাই রিচি</p>
+      <p><strong>Budget:</strong> $183M</p>
+      <p><strong>Gross:</strong> $1.05B</p>
+      <a href="https://drive.google.com/file/d/1rPUK-sOL3Un_XEdn41KifSzTnN0WMe6u/view" class="download-btn" target="_blank">Download</a>
+    </div>
+  </div>
+
+  <!-- Ben 10 Omniverse (S4-6) -->
+  <div class="movie-card">
+    <img src="ben10_s4_6.jpg" alt="Ben 10 Omniverse S4–6">
+    <div class="movie-info">
+      <h3>Ben 10 Omniverse (Seasons 4–6)</h3>
+      <p><strong>Cast:</strong> পোলি স্টিন, রিচার্ড ডিন অ্যান্ডারসন</p>
+      <p><strong>Director:</strong> ডিউক ফিল্ড</p>
+      <p><strong>Per Episode Budget:</strong> $1.6M</p>
+      <a href="https://drive.google.com/file/d/1WLe0khdlev1282515bDzNe99D7-Av7mT/view" class="download-btn" target="_blank">Download</a>
+    </div>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer>
+  <p>&copy; <span id="year"></span> Ahameed. All rights reserved.</p>
+  <div class="social-icons">
+    <a href="https://facebook.com/ahameedplayz" target="_blank"><i class="fab fa-facebook"></i></a>
+    <a href="https://instagram.com/ahameed.1" target="_blank"><i class="fab fa-instagram"></i></a>
+    <a href="https://youtube.com/@ahameedplayz" target="_blank"><i class="fab fa-youtube"></i></a>
+    <a href="https://tiktok.com/@ahameedplayz" target="_blank"><i class="fab fa-tiktok"></i></a>
+  </div>
+</footer>
+
+<script>
+  document.getElementById("year").textContent = new Date().getFullYear();
+  
+  // Add animation to cards when they come into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.animationPlayState = 'running';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.movie-card').forEach(card => {
+    observer.observe(card);
+  });
+</script>
+
+</body>
+        </html>
